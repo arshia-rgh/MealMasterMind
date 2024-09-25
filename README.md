@@ -22,7 +22,7 @@
             Generate meal plans based on user preferences, dietary restrictions, and selected recipes.
             Allow users to customize meal plans with meals for specific days.
 
-####    User Service (FastAPI/Golang)
+####    User Service (FastAPI)
         Responsibilities: Manage user accounts and profiles.
         Features:
             User registration, login, and profile management.
