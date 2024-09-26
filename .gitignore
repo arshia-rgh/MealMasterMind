@@ -1,15 +1,14 @@
 .idea/
+.venv/
 
 # user service ignored files
-user/.user_venv
 user/__pycache__/
+user/.env
 
 # reciepe service ignored files
-
-recipe/.recipe_venv
 recipe/__pycache__/
+recipe/.env
 
 # notification service ignored files
-
-notification/.notif_venv
 notification/__pycache__/
+notification/.env

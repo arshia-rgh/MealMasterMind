@@ -1,2 +1,8 @@
 # main framework
 fastapi==0.115.0
+
+# ORM
+sqlalchemy==2.0.35
+
+# env variables
+python-dotenv==1.0.1
