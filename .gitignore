@@ -8,3 +8,8 @@ user/__pycache__/
 
 recipe/.recipe_venv
 recipe/__pycache__/
+
+# notification service ignored files
+
+notification/.notif_venv
+notification/__pycache__/
