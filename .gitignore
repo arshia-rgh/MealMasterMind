@@ -1,1 +1,5 @@
-.idea
+.idea/
+
+# user service ignored files
+user/.user_venv
+user/__pycache__/
