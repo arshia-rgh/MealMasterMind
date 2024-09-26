@@ -3,3 +3,8 @@
 # user service ignored files
 user/.user_venv
 user/__pycache__/
+
+# reciepe service ignored files
+
+recipe/.recipe_venv
+recipe/__pycache__/
