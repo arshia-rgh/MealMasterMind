@@ -6,9 +6,9 @@ user/**/__pycache__/
 user/.env
 
 # reciepe service ignored files
-recipe/__pycache__/
+recipe/**/__pycache__/
 recipe/.env
 
 # notification service ignored files
-notification/__pycache__/
+notification/**/__pycache__/
 notification/.env
