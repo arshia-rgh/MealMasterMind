@@ -5,7 +5,7 @@ from user.app.schemas.user import RegisterUser, ResponseUser
 from user.app.utils import hash_password
 
 
-def create_user(db: Session, user: RegisterUser) -> ResponseUser:
+async def create_user(db: Session, user: RegisterUser) -> ResponseUser:
     hashed_password = hash_password.hash_password(user.password)
     db_user = User(
         first_name=user.first_name,
