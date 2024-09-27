@@ -2,7 +2,7 @@
 .venv/
 
 # user service ignored files
-user/__pycache__/
+user/**/__pycache__/
 user/.env
 
 # reciepe service ignored files
