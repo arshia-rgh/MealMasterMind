@@ -14,11 +14,11 @@ class RegisterUser(BaseModel):
 
 class ResponseUser(BaseModel):
     id: int
-    first_name: str
-    last_name: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     username: str
     email: str
-    phone_number: str
+    phone_number: Optional[str] = None
 
     class Config:
         from_attributes = True
