@@ -25,10 +25,5 @@ class ResponseUser(BaseModel):
         from_attributes = True
 
 
-class LoginUser(BaseModel):
-    username: str
-    password: str
-
-
 class UpdateUser(RegisterUser):
     pass
