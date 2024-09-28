@@ -23,3 +23,8 @@ class ResponseUser(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class LoginUser(BaseModel):
+    username: str
+    password: str

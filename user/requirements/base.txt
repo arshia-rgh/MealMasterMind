@@ -9,3 +9,9 @@ python-dotenv==1.0.1
 
 # mysql db
 pymysql==1.1.1
+
+# hash password
+passlib[bcrypt]
+
+# jwt token
+pyjwt==2.9.0
