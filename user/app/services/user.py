@@ -8,7 +8,7 @@ from user.app.utils.hash_password import verify_password
 from user.app.utils.jwt import create_access_token
 
 
-async def create_user(db: Session, user: RegisterUser) -> ResponseUser:
+def create_user(db: Session, user: RegisterUser) -> ResponseUser:
     hashed_password = hash_password.hash_password(user.password)
     db_user = User(
         first_name=user.first_name,
@@ -26,7 +26,7 @@ async def create_user(db: Session, user: RegisterUser) -> ResponseUser:
     return ResponseUser.model_validate(db_user)
 
 
-async def authenticate_user(db: Session, username: str, password: str):
+def authenticate_user(db: Session, username: str, password: str):
     try:
         db_user = db.query(User).filter(User.username == username).one()
 
