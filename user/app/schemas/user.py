@@ -28,3 +28,7 @@ class ResponseUser(BaseModel):
 class LoginUser(BaseModel):
     username: str
     password: str
+
+
+class UpdateUser(RegisterUser):
+    pass
