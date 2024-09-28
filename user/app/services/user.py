@@ -42,7 +42,7 @@ def authenticate_user(db: Session, username: str, password: str):
     return {"access_token": access_token, "token-type": "bearer"}
 
 
-def update_user(db: Session, updated_user: UpdateUser, current_user: User) -> ResponseUser:
+def update_user(db: Session, updated_user: UpdateUser, current_user: ResponseUser) -> ResponseUser:
     db_user = db.query(User).filter(User.id == current_user.id).first()
 
     if not db_user:
