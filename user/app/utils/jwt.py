@@ -21,4 +21,9 @@ def create_access_token(data: dict):
 
 
 def verify_access_token(token: str):
-    pass
+    try:
+        payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
+        return payload
+
+    except jwt.PyJWTError:
+        return None
