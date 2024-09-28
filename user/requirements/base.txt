@@ -15,3 +15,6 @@ passlib[bcrypt]
 
 # jwt token
 pyjwt==2.9.0
+
+# for using form data in login
+python-multipart==0.0.11
