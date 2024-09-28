@@ -51,12 +51,13 @@ def update_user(db: Session, updated_user: UpdateUser, current_user: ResponseUse
             detail="Useer not found"
         )
 
-    db_user.first_name = updated_user.first_name
-    db_user.last_name = updated_user.last_name
-    db_user.username = updated_user.username
-    db_user.email = updated_user.email
-    db_user.phone_number = updated_user.phone_number
-    db_user.password = hash_password.hash_password(updated_user.password)
+    db_user.first_name = updated_user.first_name or db_user.first_name
+    db_user.last_name = updated_user.last_name or db_user.last_name
+    db_user.username = updated_user.username or db_user.username
+    db_user.email = updated_user.email or db_user.email
+    db_user.phone_number = updated_user.phone_number or db_user.phone_number
+    if updated_user.password:
+        db_user.password = hash_password.hash_password(updated_user.password)
 
     db.commit()
     db.refresh(db_user)
