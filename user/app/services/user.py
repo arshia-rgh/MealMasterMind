@@ -62,3 +62,18 @@ def update_user(db: Session, updated_user: UpdateUser, current_user: ResponseUse
     db.refresh(db_user)
 
     return ResponseUser.model_validate(db_user)
+
+
+def delete_user(db: Session, current_user: ResponseUser):
+    db_user = db.query(User).filter(User.id == current_user.id).first()
+
+    if not db_user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Useer not found"
+        )
+
+    db.delete(db_user)
+    db.commit()
+
+    return {"message": "User deleted successfully."}
