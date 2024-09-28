@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -26,4 +28,9 @@ class ResponseUser(BaseModel):
 
 
 class UpdateUser(RegisterUser):
-    pass
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    username: Optional[str] = None
+    email: Optional[str] = None
+    phone_number: Optional[str] = None
+    password: Optional[str] = None
