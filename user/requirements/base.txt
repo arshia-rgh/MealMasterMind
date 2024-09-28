@@ -12,3 +12,6 @@ pymysql==1.1.1
 
 # hash password
 passlib[bcrypt]
+
+# jwt token
+pyjwt==2.9.0
