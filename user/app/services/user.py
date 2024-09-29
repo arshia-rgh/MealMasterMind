@@ -93,7 +93,7 @@ def change_password(db: Session, updated_data: ChangePassword, current_user: Res
     if not verify_password(updated_data.old_password, db_user.password):
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"message": "old password is not correct"})
 
-    db_user.password = hash_password.hash_password(updated_data.new_password)
+    db_user.password = hash_password.hash_password(updated_data.password)
 
     db.commit()
     db.refresh(db_user)
