@@ -18,3 +18,6 @@ pyjwt==2.9.0
 
 # for using form data in login
 python-multipart==0.0.11
+
+# email-validator for pydantic email field
+email-validator==2.2.0
