@@ -9,7 +9,7 @@ PHONE_NUMBER_REGEX = config.PHONE_NUMBER_REGEX
 
 
 class PasswordValidator(BaseModel):
-    @field_validator('password')
+    @field_validator('password', check_fields=False)
     @classmethod
     def validate_password(cls, password):
         if not re.match(PASSWORD_REGEX, password):
@@ -18,7 +18,7 @@ class PasswordValidator(BaseModel):
 
 
 class PhoneNumberValidator(BaseModel):
-    @field_validator('phone_number')
+    @field_validator('phone_number', check_fields=False)
     @classmethod
     def validate_phone_number(cls, phone_number):
         if phone_number and not re.match(PHONE_NUMBER_REGEX, phone_number):
