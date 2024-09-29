@@ -25,7 +25,7 @@ async def delete_current_user(db: Session = Depends(get_db), current_user: Respo
     return delete_user(db, current_user)
 
 
-@router.put("/me/change-password/")
+@router.post("/me/change-password/")
 async def change_current_user_password(updated_data: ChangePassword, db: Session = Depends(get_db),
                                        current_user: ResponseUser = Depends(get_current_user)):
     return change_password(db, updated_data, current_user)
