@@ -30,4 +30,3 @@ class UpdateUser(BaseModel):
     username: Optional[str] = None
     email: Optional[str] = None
     phone_number: Optional[str] = None
-    password: Optional[str] = None
