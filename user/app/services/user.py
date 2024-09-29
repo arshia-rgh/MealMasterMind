@@ -76,3 +76,7 @@ def delete_user(db: Session, current_user: ResponseUser):
     db.commit()
 
     return {"message": "User deleted successfully."}
+
+
+def change_password(db: Session, current_user: ResponseUser):
+    pass
