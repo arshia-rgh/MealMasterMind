@@ -2,7 +2,10 @@ import re
 
 from pydantic import BaseModel, field_validator, ValidationError
 
-from user.app.config import PASSWORD_REGEX, PHONE_NUMBER_REGEX
+from user.app import config
+
+PASSWORD_REGEX = config.PASSWORD_REGEX
+PHONE_NUMBER_REGEX = config.PHONE_NUMBER_REGEX
 
 
 class PasswordValidator(BaseModel):
