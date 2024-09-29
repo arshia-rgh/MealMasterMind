@@ -16,3 +16,6 @@ class DBConfig:
 SECRET_KEY = str(os.getenv("SECRET_KEY"))
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 20
+
+PHONE_NUMBER_REGEX = r"^(09|\+989)\d{9,10}$"
+PASSWORD_REGEX = r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"

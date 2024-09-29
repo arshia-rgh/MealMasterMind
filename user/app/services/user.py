@@ -1,9 +1,12 @@
+from typing import Optional
+
 from fastapi import HTTPException, status
+from fastapi.responses import JSONResponse
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
 
 from user.app.models.user import User
-from user.app.schemas.user import RegisterUser, ResponseUser, UpdateUser
+from user.app.schemas.user import RegisterUser, ResponseUser, UpdateUser, ChangePassword
 from user.app.utils import hash_password
 from user.app.utils.hash_password import verify_password
 from user.app.utils.jwt import create_access_token
@@ -27,7 +30,7 @@ def create_user(db: Session, user: RegisterUser) -> ResponseUser:
     return ResponseUser.model_validate(db_user)
 
 
-def authenticate_user(db: Session, username: str, password: str):
+def authenticate_user(db: Session, username: str, password: str) -> Optional[dict]:
     try:
         db_user = db.query(User).filter(User.username == username).one()
 
@@ -56,8 +59,6 @@ def update_user(db: Session, updated_user: UpdateUser, current_user: ResponseUse
     db_user.username = updated_user.username or db_user.username
     db_user.email = updated_user.email or db_user.email
     db_user.phone_number = updated_user.phone_number or db_user.phone_number
-    if updated_user.password:
-        db_user.password = hash_password.hash_password(updated_user.password)
 
     db.commit()
     db.refresh(db_user)
@@ -77,4 +78,24 @@ def delete_user(db: Session, current_user: ResponseUser):
     db.delete(db_user)
     db.commit()
 
-    return {"message": "User deleted successfully."}
+    return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content={"message": "User deleted successfully."})
+
+
+def change_password(db: Session, updated_data: ChangePassword, current_user: ResponseUser):
+    db_user = db.query(User).filter(User.id == current_user.id).first()
+
+    if not db_user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Useer not found"
+        )
+
+    if not verify_password(updated_data.old_password, db_user.password):
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"message": "old password is not correct"})
+
+    db_user.password = hash_password.hash_password(updated_data.password)
+
+    db.commit()
+    db.refresh(db_user)
+
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "password changed successfully"})
