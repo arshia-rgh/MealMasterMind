@@ -1,6 +1,6 @@
-from typing import Optional
+from typing import Optional, Any, Self
 
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator, ValidationError
 
 
 class RegisterUser(BaseModel):
@@ -30,3 +30,20 @@ class UpdateUser(BaseModel):
     username: Optional[str] = None
     email: Optional[str] = None
     phone_number: Optional[str] = None
+
+
+class ChangePassword(BaseModel):
+    old_password: str
+    new_password: str
+    confirm_password: str
+
+
+    @model_validator(mode="after")
+    def validate_passwords(self) -> Self:
+        new_password = self.new_password
+        confirm_password = self.confirm_password
+
+        if new_password is not None and confirm_password is not None and new_password != confirm_password:
+            raise ValidationError("Passwords do not match")
+
+        return self
