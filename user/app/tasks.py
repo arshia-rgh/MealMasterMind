@@ -1,3 +1,5 @@
+import asyncio
+import json
 from typing import Optional
 
 from celery import shared_task
@@ -23,13 +25,15 @@ def send_email(subject: str, recipients: list[str], body: dict, template_name: O
     if template_name is None and subtype == "html":
         raise ValueError("Template name must be provided for HTML emails")
 
+    body_str = json.dumps(body)
+
     message = MessageSchema(
         subject=subject,
         recipients=recipients,
-        body=body,
+        body=body_str,
         subtype=subtype,
     )
 
     fm = FastMail(conf)
 
-    fm.send_message(message, template_name=template_name)
+    asyncio.run(fm.send_message(message, template_name=template_name))
