@@ -33,12 +33,12 @@ def create_user(db: Session, user: RegisterUser) -> JSONResponse | ResponseUser:
         phone_number=user.phone_number,
     )
 
+    db.add(db_user)
     try:
-        db.add(db_user)
-    except sqlalchemy.exc.IntegrityError as e:
-        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"error": e})
+        db.commit()
+    except Exception as e:
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"error": str(e)})
 
-    db.commit()
     db.refresh(db_user)
 
     return ResponseUser.model_validate(db_user)
