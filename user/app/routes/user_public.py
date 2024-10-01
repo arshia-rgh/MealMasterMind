@@ -27,3 +27,8 @@ async def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Sessi
 @router.post("/request-reset-password/")
 async def forget_password(email: RequestResetPassword, db: Session = Depends(get_db)):
     return request_reset_password(db, email)
+
+
+@router.post("/confirm-reset-password/{token}/")
+def confirm_forget_password():
+    pass

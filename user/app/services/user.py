@@ -100,7 +100,7 @@ def request_reset_password(db: Session, email: RequestResetPassword):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Useer not found")
 
     reset_token = create_access_token({"sub": email})
-    resset_link = f"https://{config.BASE_URL}/reset-password/{reset_token}"
+    resset_link = f"https://{config.BASE_URL}/confirm-reset-password/{reset_token}"
 
     tasks.send_email.delay(
         subject="Password Reset Request",
