@@ -1,0 +1,2 @@
+GET localhost:8000/api/protected/me/
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IHVzZXJuYW1lIiwiZXhwIjoxNzI3ODI2Nzg4fQ.BylCitUOkMuxycXswmsyy-i72JBDN76Jfq5ZNMmJPbg

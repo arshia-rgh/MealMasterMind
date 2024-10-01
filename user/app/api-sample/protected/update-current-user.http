@@ -1,0 +1,8 @@
+PUT localhost:8000/api/protected/me/
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IHVzZXJuYW1lIiwiZXhwIjoxNzI3ODI1Njc4fQ.RZpl1JsuHHGfd5_yIvauH3lTZjRoX7PDS880gLwyQCI
+
+
+{
+  "username": "github.com/arshia-rgh"
+}

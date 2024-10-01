@@ -1,0 +1,11 @@
+POST localhost:8000/api/register/
+content-type: application/json
+
+{
+  "first_name": "Arshia",
+  "last_name": "Rezagholi",
+  "username": "arshia-rgh",
+  "email": "arshiarezagholi1212@gmail.com",
+  "password": "Test1234",
+  "phone_number": "09388080022"
+}

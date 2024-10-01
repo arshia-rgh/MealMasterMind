@@ -1,7 +1,8 @@
 import os
 
-from user.app.database import engine
 from sqlalchemy import text
+
+from user.app.database import engine
 
 
 def apply_migration(file_path):
@@ -13,8 +14,8 @@ def apply_migration(file_path):
 
 
 if __name__ == "__main__":
-    migrations_dir = 'versions'
+    migrations_dir = "versions"
     for filename in sorted(os.listdir(migrations_dir)):
-        if filename.endswith('.sql'):
+        if filename.endswith(".sql"):
             file_path = os.path.join(migrations_dir, filename)
             apply_migration(file_path)

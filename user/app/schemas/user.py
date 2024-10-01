@@ -1,8 +1,8 @@
-from typing import Optional, Self
+from typing import Optional
 
-from pydantic import BaseModel, model_validator, ValidationError, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field
 
-from user.app.schemas.validators import PasswordValidator, PhoneNumberValidator
+from user.app.schemas.validators import PasswordMatchingValidator, PasswordValidator, PhoneNumberValidator
 
 
 class RegisterUser(PasswordValidator, PhoneNumberValidator):
@@ -12,6 +12,11 @@ class RegisterUser(PasswordValidator, PhoneNumberValidator):
     email: EmailStr
     password: str = Field(..., min_length=8)
     phone_number: Optional[str] = None
+
+
+class LoginUser(PasswordValidator):
+    username: str
+    password: str = Field(..., min_length=8)
 
 
 class ResponseUser(BaseModel):
@@ -39,12 +44,11 @@ class ChangePassword(PasswordValidator):
     password: str = Field(..., min_length=8)
     confirm_password: str
 
-    @model_validator(mode="after")
-    def check_new_password_matching(self) -> Self:
-        password = self.password
-        confirm_password = self.confirm_password
 
-        if password != confirm_password:
-            raise ValidationError("Passwords do not match")
+class RequestResetPassword(BaseModel):
+    email: EmailStr
 
-        return self
+
+class ConfirmResetPassword(PasswordMatchingValidator):
+    password: str = Field(..., min_length=8)
+    confirm_password: str

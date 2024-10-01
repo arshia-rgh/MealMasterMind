@@ -1,0 +1,2 @@
+DELETE localhost:8000/api/protected/me/
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IHVzZXJuYW1lIiwiZXhwIjoxNzI3ODI2NjU3fQ.9MdrzdHww8F9ZT9s5GwVJwhADbLTgmJRB7cruS5t_ZQ
