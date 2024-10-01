@@ -45,7 +45,7 @@ class ChangePassword(PasswordValidator):
     confirm_password: str
 
 
-class RequestResetPassword(PasswordMatchingValidator):
+class RequestResetPassword(BaseModel):
     email: EmailStr
 
 

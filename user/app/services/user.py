@@ -4,6 +4,7 @@ from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
+from starlette.responses import JSONResponse
 
 from user.app import config, tasks
 from user.app.models.user import User
@@ -21,7 +22,7 @@ from user.app.utils.hash_password import verify_password
 from user.app.utils.jwt import create_access_token, verify_access_token
 
 
-def create_user(db: Session, user: RegisterUser) -> ResponseUser:
+def create_user(db: Session, user: RegisterUser) -> JSONResponse | ResponseUser:
     hashed_password = hash_password.hash_password(user.password)
     db_user = User(
         first_name=user.first_name,
@@ -32,7 +33,11 @@ def create_user(db: Session, user: RegisterUser) -> ResponseUser:
         phone_number=user.phone_number,
     )
 
-    db.add(db_user)
+    try:
+        db.add(db_user)
+    except sqlalchemy.exc.IntegrityError as e:
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"error": e})
+
     db.commit()
     db.refresh(db_user)
 
@@ -105,7 +110,7 @@ def request_reset_password(db: Session, email: RequestResetPassword) -> JSONResp
     db_user = db.query(User).filter(User.email == email).first()
 
     if not db_user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Useer not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
     reset_token = create_access_token(
         {"sub": email}, expire_minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES_FOR_RESET_PASSWORD
