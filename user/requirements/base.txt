@@ -24,3 +24,6 @@ email-validator==2.2.0
 
 # task queue
 celery==5.4.0
+
+#send mail
+fastapi-mail==1.4.1
