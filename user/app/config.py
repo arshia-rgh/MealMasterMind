@@ -37,9 +37,9 @@ MAIL_FROM = os.getenv("MAIL_FROM")
 MAIL_PORT = 587
 MAIL_SERVER = "smtp.gmail.com"
 MAIL_FROM_NAME = os.getenv("MAIL_FROM_NAME")
-MAIL_TLS = (True,)
-MAIL_SSL = (False,)
-USE_CREDENTIALS = (True,)
+MAIL_STARTTLS = True
+MAIL_SSL_TLS = False
+USE_CREDENTIALS = True
 
 # Base Url
 BASE_URL = "localhost:8000"
