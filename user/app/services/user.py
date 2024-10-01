@@ -107,19 +107,19 @@ def change_password(db: Session, updated_data: ChangePassword, current_user: Res
 
 
 def request_reset_password(db: Session, email: RequestResetPassword) -> JSONResponse:
-    db_user = db.query(User).filter(User.email == email).first()
+    db_user = db.query(User).filter(User.email == email.email).first()
 
     if not db_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
     reset_token = create_access_token(
-        {"sub": email}, expire_minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES_FOR_RESET_PASSWORD
+        {"sub": email.email}, expire_minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES_FOR_RESET_PASSWORD
     )
     resset_link = f"https://{config.BASE_URL}/confirm-reset-password/{reset_token}"
 
     tasks.send_email.delay(
         subject="Password Reset Request",
-        recipients=[email],
+        recipients=[email.email],
         body={"reset_link": resset_link},
         template_name="reset_password.html",
         subtype="html",
