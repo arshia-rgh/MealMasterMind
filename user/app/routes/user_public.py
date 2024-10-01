@@ -3,8 +3,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from user.app.database import get_db
-from user.app.schemas.user import RegisterUser, ResponseUser
-from user.app.services.user import authenticate_user, create_user
+from user.app.schemas.user import RegisterUser, RequestResetPassword, ResponseUser
+from user.app.services.user import authenticate_user, create_user, request_reset_password
 
 router = APIRouter()
 
@@ -22,3 +22,8 @@ async def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Sessi
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid username or password")
 
     return token
+
+
+@router.post("/request-reset-password/")
+async def forget_password(email: RequestResetPassword, db: Session = Depends(get_db)):
+    return request_reset_password(db, email)
