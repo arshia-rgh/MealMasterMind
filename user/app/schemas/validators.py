@@ -1,6 +1,6 @@
 import re
 
-from pydantic import BaseModel, ValidationError, field_validator
+from pydantic import BaseModel, ValidationError, field_validator, model_validator
 
 from user.app import config
 
@@ -28,7 +28,7 @@ class PhoneNumberValidator(BaseModel):
 
 class PasswordMatchingValidator(BaseModel):
     @model_validator(mode="after")
-    def check_new_password_matching(self) -> Self:
+    def check_new_password_matching(self):
         password = self.password
         confirm_password = self.confirm_password
 
