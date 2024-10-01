@@ -14,7 +14,7 @@ conf = ConnectionConfig(
     MAIL_TLS=config.MAIL_TLS,
     MAIL_SSL=config.MAIL_SSL,
     USE_CREDENTIALS=config.USE_CREDENTIALS,
-    TEMPLATE_FOLDER="./templates/email",
+    TEMPLATE_FOLDER="./email-templates",
 )
 
 
