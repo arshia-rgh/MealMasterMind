@@ -2,6 +2,8 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
+	"mealPlanning/config"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -9,8 +11,25 @@ import (
 var DB *sql.DB
 
 func InitDB() {
+	err := config.InitDBConfig()
 
-	var err error
-	DB, err = sql.Open("mysql", "user:password@/dbname")
+	if err != nil {
+		panic("could not fetch data from .env file")
+	}
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+		config.DbConfig.DBUser,
+		config.DbConfig.DBPassword,
+		config.DbConfig.DBHost,
+		config.DbConfig.DBPort,
+		config.DbConfig.DBName,
+	)
+	DB, err = sql.Open("mysql", dsn)
+	if err != nil {
+		panic("could not open the database connection")
+	}
+
+	if err = DB.Ping(); err != nil {
+		panic("could not ping the database")
+	}
 
 }
