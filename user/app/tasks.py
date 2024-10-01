@@ -22,6 +22,9 @@ conf = ConnectionConfig(
 @shared_task
 async def send_email(subject: str, recipients: list[str], body: dict,
                      template_name: Optional[str], subtype: str = "plain"):
+    if template_name is None and subtype == "html":
+        raise ValueError("Template name must be provided for HTML emails")
+
     message = MessageSchema(
         subject=subject,
         recipients=recipients,
