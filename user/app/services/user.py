@@ -81,7 +81,7 @@ def delete_user(db: Session, current_user: ResponseUser) -> JSONResponse:
     db.delete(db_user)
     db.commit()
 
-    return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content={"message": "User deleted successfully."})
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "User deleted successfully."})
 
 
 def change_password(db: Session, updated_data: ChangePassword, current_user: ResponseUser) -> JSONResponse:
