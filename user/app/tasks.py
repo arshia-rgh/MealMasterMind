@@ -1,5 +1,4 @@
 import asyncio
-import json
 from typing import Optional
 
 from celery import shared_task
@@ -21,16 +20,24 @@ conf = ConnectionConfig(
 
 
 @shared_task
-def send_email(subject: str, recipients: list[str], body: dict, template_name: Optional[str], subtype: str = "plain"):
+def send_email(
+    subject: str, recipients: list[str], body: dict | list | str, template_name: Optional[str], subtype: str = "plain"
+):
     if template_name is None and subtype == "html":
         raise ValueError("Template name must be provided for HTML emails")
 
-    body_str = json.dumps(body)
+    if isinstance(body, dict):
+        template_body = body
+        body = None
+    else:
+        body = body
+        template_body = None
 
     message = MessageSchema(
         subject=subject,
         recipients=recipients,
-        body=body_str,
+        body=body,
+        template_body=template_body,
         subtype=subtype,
     )
 
