@@ -32,4 +32,7 @@ func InitDB() {
 		panic("could not ping the database")
 	}
 
+	DB.SetMaxOpenConns(10)
+	DB.SetMaxIdleConns(5)
+
 }
