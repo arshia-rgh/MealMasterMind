@@ -115,7 +115,7 @@ def request_reset_password(db: Session, email: RequestResetPassword) -> JSONResp
     reset_token = create_access_token(
         {"sub": email.email}, expire_minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES_FOR_RESET_PASSWORD
     )
-    resset_link = f"http://{config.BASE_URL}/confirm-reset-password/{reset_token}"
+    resset_link = f"http://{config.BASE_URL}/api/confirm-reset-password/{reset_token}/"
 
     tasks.send_email.delay(
         subject="Password Reset Request",
