@@ -6,7 +6,7 @@ from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
 
 from user.app.models.user import User
-from user.app.schemas.user import RegisterUser, ResponseUser, UpdateUser, ChangePassword
+from user.app.schemas.user import ChangePassword, RegisterUser, ResponseUser, UpdateUser
 from user.app.utils import hash_password
 from user.app.utils.hash_password import verify_password
 from user.app.utils.jwt import create_access_token
@@ -20,7 +20,7 @@ def create_user(db: Session, user: RegisterUser) -> ResponseUser:
         username=user.username,
         email=user.email,
         password=hashed_password,
-        phone_number=user.phone_number
+        phone_number=user.phone_number,
     )
 
     db.add(db_user)
@@ -49,10 +49,7 @@ def update_user(db: Session, updated_user: UpdateUser, current_user: ResponseUse
     db_user = db.query(User).filter(User.id == current_user.id).first()
 
     if not db_user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Useer not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Useer not found")
 
     db_user.first_name = updated_user.first_name or db_user.first_name
     db_user.last_name = updated_user.last_name or db_user.last_name
@@ -70,10 +67,7 @@ def delete_user(db: Session, current_user: ResponseUser):
     db_user = db.query(User).filter(User.id == current_user.id).first()
 
     if not db_user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Useer not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Useer not found")
 
     db.delete(db_user)
     db.commit()
@@ -85,10 +79,7 @@ def change_password(db: Session, updated_data: ChangePassword, current_user: Res
     db_user = db.query(User).filter(User.id == current_user.id).first()
 
     if not db_user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Useer not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Useer not found")
 
     if not verify_password(updated_data.old_password, db_user.password):
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"message": "old password is not correct"})

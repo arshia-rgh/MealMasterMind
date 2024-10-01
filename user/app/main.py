@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from user.app.routes import user_public, user_protected
+from user.app.routes import user_protected, user_public
 
 app = FastAPI()
 

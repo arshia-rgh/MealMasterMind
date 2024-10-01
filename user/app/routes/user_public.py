@@ -3,8 +3,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from user.app.database import get_db
-from user.app.schemas.user import ResponseUser, RegisterUser
-from user.app.services.user import create_user, authenticate_user
+from user.app.schemas.user import RegisterUser, ResponseUser
+from user.app.services.user import authenticate_user, create_user
 
 router = APIRouter()
 
@@ -19,9 +19,6 @@ async def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Sessi
     token = authenticate_user(db, form_data.username, form_data.password)
 
     if not token:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="invalid username or password"
-        )
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid username or password")
 
     return token

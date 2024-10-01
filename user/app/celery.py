@@ -1,12 +1,10 @@
-from celery import Celery
-
 import config
+from celery import Celery
 
 celery_app = Celery(
     "user_service",
     broker=config.CELERY_BROKER,
     backend=config.CELERY_BACKEND,
-
 )
 
 celery_app.conf.update(

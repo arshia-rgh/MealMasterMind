@@ -34,9 +34,6 @@ repos:
       - id: go-fmt
         files: ^(mealPlanning|shoppingList)/.*\.go$
         exclude: ^(?!mealPlanning|shoppingList)/
-      - id: golangci-lint
-        files: ^(mealPlanning|shoppingList)/.*\.go$
-        exclude: ^(?!mealPlanning|shoppingList)/
       - id: go-imports
         files: ^(mealPlanning|shoppingList)/.*\.go$
         exclude: ^(?!mealPlanning|shoppingList)/

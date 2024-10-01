@@ -1,7 +1,7 @@
 from typing import Optional
 
 from celery import shared_task
-from fastapi_mail import ConnectionConfig, MessageSchema, FastMail
+from fastapi_mail import ConnectionConfig, FastMail, MessageSchema
 
 from user.app import config
 
@@ -14,14 +14,14 @@ conf = ConnectionConfig(
     MAIL_TLS=config.MAIL_TLS,
     MAIL_SSL=config.MAIL_SSL,
     USE_CREDENTIALS=config.USE_CREDENTIALS,
-    TEMPLATE_FOLDER="./templates/email"
-
+    TEMPLATE_FOLDER="./templates/email",
 )
 
 
 @shared_task
-async def send_email(subject: str, recipients: list[str], body: dict,
-                     template_name: Optional[str], subtype: str = "plain"):
+async def send_email(
+    subject: str, recipients: list[str], body: dict, template_name: Optional[str], subtype: str = "plain"
+):
     if template_name is None and subtype == "html":
         raise ValueError("Template name must be provided for HTML emails")
 
@@ -30,7 +30,6 @@ async def send_email(subject: str, recipients: list[str], body: dict,
         recipients=recipients,
         body=body,
         subtype=subtype,
-
     )
 
     fm = FastMail(conf)

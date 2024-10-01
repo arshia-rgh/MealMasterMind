@@ -1,6 +1,6 @@
 from typing import Optional, Self
 
-from pydantic import BaseModel, model_validator, ValidationError, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, ValidationError, model_validator
 
 from user.app.schemas.validators import PasswordValidator, PhoneNumberValidator
 
