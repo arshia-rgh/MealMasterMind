@@ -1,5 +1,6 @@
-import config
 from celery import Celery
+
+from user.app import config
 
 celery_app = Celery(
     "user_service",
