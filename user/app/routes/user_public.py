@@ -3,8 +3,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from user.app.database import get_db
-from user.app.schemas.user import RegisterUser, RequestResetPassword, ResponseUser
-from user.app.services.user import authenticate_user, create_user, request_reset_password
+from user.app.schemas.user import ConfirmResetPassword, RegisterUser, RequestResetPassword, ResponseUser
+from user.app.services.user import authenticate_user, confirm_reset_password, create_user, request_reset_password
 
 router = APIRouter()
 
@@ -30,5 +30,5 @@ async def forget_password(email: RequestResetPassword, db: Session = Depends(get
 
 
 @router.post("/confirm-reset-password/{token}/")
-def confirm_forget_password():
-    pass
+def confirm_forget_password(token: str, change_password_data: ConfirmResetPassword, db: Session = Depends(get_db)):
+    return confirm_reset_password(db, token, change_password_data)
