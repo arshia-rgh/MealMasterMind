@@ -133,7 +133,7 @@ def confirm_reset_password(db: Session, token: str, change_password_data: Confir
 
     email = decoded_token.get("sub")
 
-    db_user = db.query(User).filter(User.email == email)
+    db_user = db.query(User).filter(User.email == email).first()
 
     db_user.password = hash_password.hash_password(change_password_data.password)
 
