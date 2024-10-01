@@ -13,3 +13,6 @@ Use http://127.0.0.1:8000/docs to access api endpoints documentation
 
 
 (pre-commit install)
+
+# bugs:
+pre-commit cant find any files
