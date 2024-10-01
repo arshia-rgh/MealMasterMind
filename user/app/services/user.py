@@ -7,10 +7,17 @@ from sqlalchemy.orm import Session
 
 from user.app import config, tasks
 from user.app.models.user import User
-from user.app.schemas.user import ChangePassword, RegisterUser, RequestResetPassword, ResponseUser, UpdateUser
+from user.app.schemas.user import (
+    ChangePassword,
+    ConfirmResetPassword,
+    RegisterUser,
+    RequestResetPassword,
+    ResponseUser,
+    UpdateUser,
+)
 from user.app.utils import hash_password
 from user.app.utils.hash_password import verify_password
-from user.app.utils.jwt import create_access_token
+from user.app.utils.jwt import create_access_token, verify_access_token
 
 
 def create_user(db: Session, user: RegisterUser) -> ResponseUser:
@@ -111,3 +118,18 @@ def request_reset_password(db: Session, email: RequestResetPassword):
     )
 
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Password reset link sent to your email"})
+
+
+def confirm_reset_password(db: Session, token: str, change_password_data: ConfirmResetPassword):
+    decoded_token = verify_access_token(token)
+
+    email = decoded_token.get("sub")
+
+    db_user = db.query(User).filter(User.email == email)
+
+    db_user.password = hash_password.hash_password(change_password_data.password)
+
+    db.commit()
+    db.refresh(db_user)
+
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "password changed successfully"})
