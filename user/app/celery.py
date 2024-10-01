@@ -1,6 +1,6 @@
 from celery import Celery
 
-from user.app import config
+from user.app import config, tasks
 
 celery_app = Celery(
     "user_service",
