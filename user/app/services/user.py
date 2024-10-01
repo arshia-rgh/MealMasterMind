@@ -71,7 +71,7 @@ def update_user(db: Session, updated_user: UpdateUser, current_user: ResponseUse
     return ResponseUser.model_validate(db_user)
 
 
-def delete_user(db: Session, current_user: ResponseUser):
+def delete_user(db: Session, current_user: ResponseUser) -> JSONResponse:
     db_user = db.query(User).filter(User.id == current_user.id).first()
 
     if not db_user:
@@ -83,7 +83,7 @@ def delete_user(db: Session, current_user: ResponseUser):
     return JSONResponse(status_code=status.HTTP_204_NO_CONTENT, content={"message": "User deleted successfully."})
 
 
-def change_password(db: Session, updated_data: ChangePassword, current_user: ResponseUser):
+def change_password(db: Session, updated_data: ChangePassword, current_user: ResponseUser) -> JSONResponse:
     db_user = db.query(User).filter(User.id == current_user.id).first()
 
     if not db_user:
@@ -100,7 +100,7 @@ def change_password(db: Session, updated_data: ChangePassword, current_user: Res
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "password changed successfully"})
 
 
-def request_reset_password(db: Session, email: RequestResetPassword):
+def request_reset_password(db: Session, email: RequestResetPassword) -> JSONResponse:
     db_user = db.query(User).filter(User.email == email).first()
 
     if not db_user:
@@ -120,7 +120,7 @@ def request_reset_password(db: Session, email: RequestResetPassword):
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Password reset link sent to your email"})
 
 
-def confirm_reset_password(db: Session, token: str, change_password_data: ConfirmResetPassword):
+def confirm_reset_password(db: Session, token: str, change_password_data: ConfirmResetPassword) -> JSONResponse:
     decoded_token = verify_access_token(token)
 
     email = decoded_token.get("sub")
