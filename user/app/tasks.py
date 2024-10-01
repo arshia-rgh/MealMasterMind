@@ -1,5 +1,7 @@
+from typing import Optional
+
 from celery import shared_task
-from fastapi_mail import ConnectionConfig
+from fastapi_mail import ConnectionConfig, MessageSchema, FastMail
 
 from user.app import config
 
@@ -12,9 +14,22 @@ conf = ConnectionConfig(
     MAIL_TLS=config.MAIL_TLS,
     MAIL_SSL=config.MAIL_SSL,
     USE_CREDENTIALS=config.USE_CREDENTIALS,
+    TEMPLATE_FOLDER="./templates/email"
+
 )
 
 
 @shared_task
-def send_email():
-    pass
+async def send_email(subject: str, recipients: list[str], body: dict,
+                     template_name: Optional[str], subtype: str = "plain"):
+    message = MessageSchema(
+        subject=subject,
+        recipients=recipients,
+        body=body,
+        subtype=subtype,
+
+    )
+
+    fm = FastMail(conf)
+
+    await fm.send_message(message, template_name=template_name)
