@@ -107,7 +107,9 @@ def request_reset_password(db: Session, email: RequestResetPassword) -> JSONResp
     if not db_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Useer not found")
 
-    reset_token = create_access_token({"sub": email})
+    reset_token = create_access_token(
+        {"sub": email}, expire_minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES_FOR_RESET_PASSWORD
+    )
     resset_link = f"https://{config.BASE_URL}/confirm-reset-password/{reset_token}"
 
     tasks.send_email.delay(
