@@ -11,9 +11,13 @@ repos:
     hooks:
       - id: black
         language_version: python3.12
+        files: ^user/.*\.py$
+        exclude: ^(?!user/)
 
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
       - id: isort
         name: isort (python)
+        files: ^user/.*\.py$
+        exclude: ^(?!user/)
