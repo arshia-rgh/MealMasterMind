@@ -3,9 +3,7 @@ from celery import Celery
 from user.app import config, tasks
 
 celery_app = Celery(
-    "user_service",
-    broker=config.CELERY_BROKER,
-    backend=config.CELERY_BACKEND,
+    "user_service", broker=config.CELERY_BROKER, backend=config.CELERY_BACKEND, broker_connection_retry_on_startup=True
 )
 
 celery_app.conf.update(
