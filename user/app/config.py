@@ -32,3 +32,14 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "Asia/Tehran"
 CELERY_ENABLE_UTC = True
+
+# Mail configs
+MAIL_USERNAME = os.getenv("MAIL_USERNAME")
+MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+MAIL_FROM = os.getenv("MAIL_FROM")
+MAIL_PORT = os.getenv("MAIL_PORT")
+MAIL_SERVER = os.getenv("MAIL_SERVER")
+MAIL_FROM_NAME = os.getenv("MAIL_FROM_NAME")
+MAIL_TLS = True,
+MAIL_SSL = False,
+USE_CREDENTIALS = True,
