@@ -60,3 +60,9 @@
     Database: PostgreSQL
     Docker: For containerization of microservices.
     Message Queue: RabbitMQ or Kafka for communication between services (if needed).
+
+
+
+# bugs:
+pre-commit cant find any files
+(use pre-commit run --all-files ) to do this manually before pushing until the pre-commit debug
