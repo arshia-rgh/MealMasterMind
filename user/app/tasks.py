@@ -19,9 +19,7 @@ conf = ConnectionConfig(
 
 
 @shared_task
-async def send_email(
-    subject: str, recipients: list[str], body: dict, template_name: Optional[str], subtype: str = "plain"
-):
+def send_email(subject: str, recipients: list[str], body: dict, template_name: Optional[str], subtype: str = "plain"):
     if template_name is None and subtype == "html":
         raise ValueError("Template name must be provided for HTML emails")
 
@@ -34,4 +32,4 @@ async def send_email(
 
     fm = FastMail(conf)
 
-    await fm.send_message(message, template_name=template_name)
+    fm.send_message(message, template_name=template_name)
