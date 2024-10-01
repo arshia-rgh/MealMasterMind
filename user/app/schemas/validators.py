@@ -24,3 +24,15 @@ class PhoneNumberValidator(BaseModel):
         if phone_number and not re.match(PHONE_NUMBER_REGEX, phone_number):
             raise ValidationError("Phone number must be a valid Iranian phone number")
         return phone_number
+
+
+class PasswordMatchingValidator(BaseModel):
+    @model_validator(mode="after")
+    def check_new_password_matching(self) -> Self:
+        password = self.password
+        confirm_password = self.confirm_password
+
+        if password != confirm_password:
+            raise ValidationError("Passwords do not match")
+
+        return self
