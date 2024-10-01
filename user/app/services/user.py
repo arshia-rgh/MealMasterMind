@@ -5,8 +5,9 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
 
+from user.app import config, tasks
 from user.app.models.user import User
-from user.app.schemas.user import ChangePassword, RegisterUser, ResponseUser, UpdateUser
+from user.app.schemas.user import ChangePassword, RegisterUser, RequestResetPassword, ResponseUser, UpdateUser
 from user.app.utils import hash_password
 from user.app.utils.hash_password import verify_password
 from user.app.utils.jwt import create_access_token
@@ -90,3 +91,23 @@ def change_password(db: Session, updated_data: ChangePassword, current_user: Res
     db.refresh(db_user)
 
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "password changed successfully"})
+
+
+def request_reset_password(db: Session, email: RequestResetPassword):
+    db_user = db.query(User).filter(User.email == email).first()
+
+    if not db_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Useer not found")
+
+    reset_token = create_access_token({"sub": email})
+    resset_link = f"https://{config.BASE_URL}/reset-password/{reset_token}"
+
+    tasks.send_email.delay(
+        subject="Password Reset Request",
+        recipients=[email],
+        body={"reset_link": resset_link},
+        template_name="reset_password.html",
+        subtype="html",
+    )
+
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Password reset link sent to your email"})

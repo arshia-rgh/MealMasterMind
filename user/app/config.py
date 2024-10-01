@@ -40,3 +40,6 @@ MAIL_FROM_NAME = os.getenv("MAIL_FROM_NAME")
 MAIL_TLS = (True,)
 MAIL_SSL = (False,)
 USE_CREDENTIALS = (True,)
+
+# Base Url
+BASE_URL = "localhost:8000"

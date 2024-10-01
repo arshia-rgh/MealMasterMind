@@ -48,3 +48,7 @@ class ChangePassword(PasswordValidator):
             raise ValidationError("Passwords do not match")
 
         return self
+
+
+class RequestResetPassword(BaseModel):
+    email: EmailStr
