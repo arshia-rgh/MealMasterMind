@@ -12,3 +12,6 @@ recipe/.env
 # notification service ignored files
 notification/**/__pycache__/
 notification/.env
+
+# mealPlanning service ignored files
+mealPlanning/.env
