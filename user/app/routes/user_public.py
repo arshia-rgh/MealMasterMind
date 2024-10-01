@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
 from user.app.database import get_db
-from user.app.schemas.user import ConfirmResetPassword, RegisterUser, RequestResetPassword, ResponseUser
+from user.app.schemas.user import ConfirmResetPassword, LoginUser, RegisterUser, RequestResetPassword, ResponseUser
 from user.app.services.user import authenticate_user, confirm_reset_password, create_user, request_reset_password
 
 router = APIRouter()
@@ -16,8 +15,8 @@ async def register_user(user: RegisterUser, db: Session = Depends(get_db)) -> Re
 
 
 @router.post("/login/")
-async def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)) -> JSONResponse:
-    token = authenticate_user(db, form_data.username, form_data.password)
+async def login_user(login_data: LoginUser, db: Session = Depends(get_db)) -> JSONResponse:
+    token = authenticate_user(db, login_data)
 
     if not token:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid username or password")

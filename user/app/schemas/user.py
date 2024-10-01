@@ -14,6 +14,11 @@ class RegisterUser(PasswordValidator, PhoneNumberValidator):
     phone_number: Optional[str] = None
 
 
+class LoginUser(PasswordValidator):
+    username: str
+    password: str = Field(..., min_length=8)
+
+
 class ResponseUser(BaseModel):
     id: int
     first_name: Optional[str] = None

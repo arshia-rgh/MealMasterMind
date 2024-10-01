@@ -10,6 +10,7 @@ from user.app.models.user import User
 from user.app.schemas.user import (
     ChangePassword,
     ConfirmResetPassword,
+    LoginUser,
     RegisterUser,
     RequestResetPassword,
     ResponseUser,
@@ -38,14 +39,14 @@ def create_user(db: Session, user: RegisterUser) -> ResponseUser:
     return ResponseUser.model_validate(db_user)
 
 
-def authenticate_user(db: Session, username: str, password: str) -> Optional[dict]:
+def authenticate_user(db: Session, login_data: LoginUser) -> Optional[dict]:
     try:
-        db_user = db.query(User).filter(User.username == username).one()
+        db_user = db.query(User).filter(User.username == login_data.username).one()
 
     except NoResultFound:
         return None
 
-    if not verify_password(password, db_user.password):
+    if not verify_password(login_data.password, db_user.password):
         return None
 
     access_token = create_access_token({"sub": db_user.username})
