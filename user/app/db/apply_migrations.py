@@ -2,7 +2,7 @@ import os
 
 from sqlalchemy import text
 
-from user.app.database import engine
+from user.app.db.database import engine
 
 
 def apply_migration(file_path):
@@ -14,7 +14,7 @@ def apply_migration(file_path):
 
 
 if __name__ == "__main__":
-    migrations_dir = "MealMasterMind/migrations"
+    migrations_dir = "../../../migrations"
     for filename in sorted(os.listdir(migrations_dir)):
         if filename.endswith(".sql"):
             file_path = os.path.join(migrations_dir, filename)
