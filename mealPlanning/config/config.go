@@ -17,7 +17,7 @@ type DBConfig struct {
 var DbConfig DBConfig
 
 func InitDBConfig() error {
-	err := godotenv.Load("mealPlanning/.env")
+	err := godotenv.Load()
 
 	if err != nil {
 		return err

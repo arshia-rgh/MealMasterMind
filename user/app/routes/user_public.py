@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
-from user.app.database import get_db
+from user.app.db.database import get_db
 from user.app.schemas.user import ConfirmResetPassword, LoginUser, RegisterUser, RequestResetPassword, ResponseUser
 from user.app.services.user import authenticate_user, confirm_reset_password, create_user, request_reset_password
 

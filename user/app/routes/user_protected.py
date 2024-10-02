@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
-from user.app.database import get_db
+from user.app.db.database import get_db
 from user.app.dependencies import get_current_user
 from user.app.schemas.user import ChangePassword, ResponseUser, UpdateUser
 from user.app.services.user import change_password, delete_user, update_user
