@@ -6,7 +6,7 @@ import (
 )
 
 func applyMigrations() error {
-	migrationsDir := "mealPlanning/db/versions"
+	migrationsDir := "../migrations"
 
 	files, err := os.ReadDir(migrationsDir)
 

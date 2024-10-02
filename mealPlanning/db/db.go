@@ -35,4 +35,9 @@ func InitDB() {
 	DB.SetMaxOpenConns(10)
 	DB.SetMaxIdleConns(5)
 
+	err = applyMigrations()
+	if err != nil {
+		panic(err)
+	}
+
 }
