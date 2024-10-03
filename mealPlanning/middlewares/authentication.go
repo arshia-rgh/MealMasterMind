@@ -53,11 +53,12 @@ func getCurrentUser(token string) (int64, error) {
 		return 0, err
 	}
 
-	userID, ok := responseData["id"].(int64)
+	userID, ok := responseData["id"].(float64)
 	if !ok {
 		return 0, errors.New("user id is not int")
 	}
-	return userID, nil
+	userIDInt := int64(userID)
+	return userIDInt, nil
 }
 
 func responseBodyToString(body []byte) (map[string]interface{}, error) {
