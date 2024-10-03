@@ -14,7 +14,7 @@ func InitDB() {
 	err := config.InitDBConfig()
 
 	if err != nil {
-		panic("could not fetch data from .env file")
+		panic(err.Error())
 	}
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
 		config.DbConfig.DBUser,
@@ -25,11 +25,11 @@ func InitDB() {
 	)
 	DB, err = sql.Open("mysql", dsn)
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 
 	if err = DB.Ping(); err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 
 	DB.SetMaxOpenConns(10)
@@ -37,7 +37,7 @@ func InitDB() {
 
 	err = applyMigrations()
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 
 }
