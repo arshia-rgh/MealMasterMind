@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 
@@ -16,17 +17,20 @@ func Authentication(context *gin.Context) {
 		return
 	}
 
-	userID := getCurrentUser(token, context)
+	userID, err := getCurrentUser(token)
+
+	if err != nil {
+		context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized", "err": err.Error()})
+	}
 
 	context.Set("user", userID)
 	context.Next()
 }
 
-func getCurrentUser(token string, context *gin.Context) int64 {
+func getCurrentUser(token string) (int64, error) {
 	req, err := http.NewRequest("GET", "http://localhost:8000/api/protected/me/", nil)
 	if err != nil {
-		context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized", "err": err.Error()})
-		return 0
+		return 0, err
 	}
 
 	req.Header.Set("Authorization", token)
@@ -35,28 +39,25 @@ func getCurrentUser(token string, context *gin.Context) int64 {
 	res, err := client.Do(req)
 
 	if err != nil || res.StatusCode != http.StatusOK {
-		context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized", "err": err})
-		return 0
+		return 0, err
 	}
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil || len(body) == 0 {
-		context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized", "err": err})
-		return 0
+		return 0, err
 	}
 
 	responseData, err := responseBodyToString(body)
 
 	if err != nil {
-		context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized", "err": err.Error()})
+		return 0, err
 	}
 
 	userID, ok := responseData["id"].(int64)
 	if !ok {
-		context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
-		return 0
+		return 0, errors.New("user id is not int")
 	}
-	return userID
+	return userID, nil
 }
 
 func responseBodyToString(body []byte) (map[string]interface{}, error) {
