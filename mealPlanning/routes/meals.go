@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"log"
 	"mealPlanning/services"
 	"net/http"
 
@@ -15,4 +16,14 @@ func createMeal(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "invalid data", "err": err.Error()})
 		return
 	}
+
+	err = meal.Save()
+	if err != nil {
+		log.Printf("Server error: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "server error"})
+		return
+	}
+
+	context.JSON(http.StatusCreated, gin.H{"message": "meal created successfully", "meal": meal})
+
 }
