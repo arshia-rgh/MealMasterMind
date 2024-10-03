@@ -3,10 +3,10 @@ package services
 import "mealPlanning/db"
 
 type Meal struct {
-	ID         int64
-	Day        string
-	RecipeId   int
-	MealPlanId int
+	ID         int64  `json:"id"`
+	Day        string `json:"day" binding:"required"`
+	RecipeId   int    `json:"recipe_id" binding:"required"`
+	MealPlanId int    `json:"meal_plan_id" binding:"required"`
 }
 
 func (m *Meal) Save() error {
