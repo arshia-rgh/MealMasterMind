@@ -25,11 +25,11 @@ func InitDB() {
 	)
 	DB, err = sql.Open("mysql", dsn)
 	if err != nil {
-		panic("could not open the database connection")
+		panic(err)
 	}
 
 	if err = DB.Ping(); err != nil {
-		panic("could not ping the database")
+		panic(err)
 	}
 
 	DB.SetMaxOpenConns(10)
