@@ -9,8 +9,13 @@ def apply_migration(file_path):
     with open(file_path, "r") as file:
         sql = file.read()
 
+    # Split the SQL file content into individual SQL statements
+    sql_statements = sql.split(";")
+
     with engine.connect() as connection:
-        connection.execute(text(sql))
+        for statement in sql_statements:
+            if statement.strip():  # Skip empty statements
+                connection.execute(text(statement))
 
 
 if __name__ == "__main__":

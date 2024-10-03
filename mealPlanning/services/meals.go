@@ -5,3 +5,7 @@ type Meal struct {
 	RecipeId   int
 	MealPlanId int
 }
+
+func (m *Meal) Save() {
+	query := "INSERT INTO meals()"
+}
