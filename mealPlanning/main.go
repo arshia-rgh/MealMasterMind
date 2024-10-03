@@ -12,8 +12,11 @@ func main() {
 
 	server := gin.Default()
 
-	apiGroup := server.Group("/api")
-	routes.RegisterRoutes(apiGroup)
+	protectedGroup := server.Group("/api/protected")
+	routes.RegisterRoutesProtected(protectedGroup)
+
+	publicGroup := server.Group("/api")
+	routes.RegisterRoutesPublic(publicGroup)
 
 	err := server.Run()
 	if err != nil {

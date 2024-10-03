@@ -2,10 +2,14 @@ package routes
 
 import "github.com/gin-gonic/gin"
 
-func RegisterRoutes(server *gin.RouterGroup) {
-	protected := server.Group("/protected")
+func RegisterRoutesProtected(server *gin.RouterGroup) {
 	/*
-		protected endpoints here
+		protected endpoints
 	*/
+}
 
+func RegisterRoutesPublic(server *gin.RouterGroup) {
+	/*
+		public endpoints
+	*/
 }
