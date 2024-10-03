@@ -2,6 +2,7 @@ package main
 
 import (
 	"mealPlanning/db"
+	"mealPlanning/middlewares"
 	"mealPlanning/routes"
 
 	"github.com/gin-gonic/gin"
@@ -13,6 +14,7 @@ func main() {
 	server := gin.Default()
 
 	protectedGroup := server.Group("/api/protected")
+	protectedGroup.Use(middlewares.Authentication)
 	routes.RegisterRoutesProtected(protectedGroup)
 
 	publicGroup := server.Group("/api")
