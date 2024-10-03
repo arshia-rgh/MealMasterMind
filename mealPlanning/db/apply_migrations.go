@@ -3,6 +3,7 @@ package db
 import (
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func applyMigrations() error {
@@ -21,16 +22,23 @@ func applyMigrations() error {
 
 		filePath := filepath.Join(migrationsDir, file.Name())
 		migrations, err := os.ReadFile(filePath)
-
 		if err != nil {
 			return err
 		}
 
-		_, err = DB.Exec(string(migrations))
+		strMigrations := string(migrations)
 
-		if err != nil {
-			return err
+		migrationsSlice := strings.Split(strMigrations, ";")
+
+		for _, sql := range migrationsSlice {
+			_, err = DB.Exec(sql)
+
+			if err != nil {
+				return err
+			}
+
 		}
+
 	}
 
 	return nil
