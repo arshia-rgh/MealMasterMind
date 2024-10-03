@@ -11,7 +11,9 @@ func main() {
 	db.InitDB()
 
 	server := gin.Default()
-	routes.RegisterRoutes(server)
+
+	apiGroup := server.Group("/api")
+	routes.RegisterRoutes(apiGroup)
 
 	err := server.Run()
 	if err != nil {
