@@ -1,0 +1,9 @@
+POST localhost:8080/api/protected/meals
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhcnNoaWFfcmdoIiwiZXhwIjoxNzI4MDA4ODE0fQ.72W135ZP1PQ3naSRjfu-fF3F_gutlCYiFzyUf6hNPeM
+
+{
+  "day": "monday",
+  "recipe_id": 1,
+  "meal_plan_id": 1
+}

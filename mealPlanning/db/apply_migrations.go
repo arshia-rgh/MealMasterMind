@@ -31,6 +31,11 @@ func applyMigrations() error {
 		migrationsSlice := strings.Split(strMigrations, ";")
 
 		for _, sql := range migrationsSlice {
+			sql = strings.TrimSpace(sql)
+			if sql == "" {
+				continue
+			}
+
 			_, err = DB.Exec(sql)
 
 			if err != nil {
