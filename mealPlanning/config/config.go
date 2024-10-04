@@ -19,7 +19,7 @@ type DBConfig struct {
 var CORSCONFIG cors.Config
 var DBCONFIG DBConfig
 
-func InitDBConfig() error {
+func InitConfigs() error {
 	err := godotenv.Load()
 
 	if err != nil {
@@ -32,15 +32,6 @@ func InitDBConfig() error {
 		DBHost:     os.Getenv("DB_HOST"),
 		DBPort:     os.Getenv("DB_PORT"),
 		DBName:     os.Getenv("DB_NAME"),
-	}
-	return nil
-}
-
-func InitCorsConfig() error {
-	err := godotenv.Load()
-
-	if err != nil {
-		return err
 	}
 
 	CORSCONFIG = cors.Config{
@@ -61,6 +52,4 @@ func InitCorsConfig() error {
 		AllowFiles:                 false,
 		OptionsResponseStatusCode:  0,
 	}
-
-	return nil
 }

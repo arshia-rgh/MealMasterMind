@@ -1,6 +1,7 @@
 package main
 
 import (
+	"mealPlanning/config"
 	"mealPlanning/db"
 	"mealPlanning/middlewares"
 	"mealPlanning/routes"
@@ -11,27 +12,16 @@ import (
 )
 
 func main() {
+	err := config.InitConfigs()
+
+	if err != nil {
+		panic(err)
+	}
+
 	db.InitDB()
 
 	server := gin.Default()
-	server.Use(cors.New(cors.Config{
-		AllowAllOrigins:            false,
-		AllowOrigins:               nil,
-		AllowOriginFunc:            nil,
-		AllowOriginWithContextFunc: nil,
-		AllowMethods:               nil,
-		AllowPrivateNetwork:        false,
-		AllowHeaders:               nil,
-		AllowCredentials:           false,
-		ExposeHeaders:              nil,
-		MaxAge:                     0,
-		AllowWildcard:              false,
-		AllowBrowserExtensions:     false,
-		CustomSchemas:              nil,
-		AllowWebSockets:            false,
-		AllowFiles:                 false,
-		OptionsResponseStatusCode:  0,
-	}))
+	server.Use(cors.New(config.CORSCONFIG))
 
 	protectedGroup := server.Group("/api/protected")
 	protectedGroup.Use(middlewares.Authentication)
@@ -40,7 +30,7 @@ func main() {
 	publicGroup := server.Group("/api")
 	routes.RegisterRoutesPublic(publicGroup)
 
-	err := server.Run()
+	err = server.Run()
 	if err != nil {
 		return
 	}

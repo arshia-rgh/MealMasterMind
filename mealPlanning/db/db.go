@@ -11,11 +11,7 @@ import (
 var DB *sql.DB
 
 func InitDB() {
-	err := config.InitDBConfig()
 
-	if err != nil {
-		panic(err.Error())
-	}
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
 		config.DBCONFIG.DBUser,
 		config.DBCONFIG.DBPassword,
@@ -23,7 +19,7 @@ func InitDB() {
 		config.DBCONFIG.DBPort,
 		config.DBCONFIG.DBName,
 	)
-	DB, err = sql.Open("mysql", dsn)
+	DB, err := sql.Open("mysql", dsn)
 	if err != nil {
 		panic(err.Error())
 	}
