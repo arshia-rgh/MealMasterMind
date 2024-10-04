@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"time"
 
 	"github.com/gin-contrib/cors"
 
@@ -35,21 +36,12 @@ func InitConfigs() error {
 	}
 
 	CORSCONFIG = cors.Config{
-		AllowAllOrigins:            false,
-		AllowOrigins:               nil,
-		AllowOriginFunc:            nil,
-		AllowOriginWithContextFunc: nil,
-		AllowMethods:               nil,
-		AllowPrivateNetwork:        false,
-		AllowHeaders:               nil,
-		AllowCredentials:           false,
-		ExposeHeaders:              nil,
-		MaxAge:                     0,
-		AllowWildcard:              false,
-		AllowBrowserExtensions:     false,
-		CustomSchemas:              nil,
-		AllowWebSockets:            false,
-		AllowFiles:                 false,
-		OptionsResponseStatusCode:  0,
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "Accept"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
 	}
+
+	return nil
 }
