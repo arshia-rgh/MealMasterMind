@@ -17,11 +17,11 @@ func InitDB() {
 		panic(err.Error())
 	}
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
-		config.DbConfig.DBUser,
-		config.DbConfig.DBPassword,
-		config.DbConfig.DBHost,
-		config.DbConfig.DBPort,
-		config.DbConfig.DBName,
+		config.DBCONFIG.DBUser,
+		config.DBCONFIG.DBPassword,
+		config.DBCONFIG.DBHost,
+		config.DBCONFIG.DBPort,
+		config.DBCONFIG.DBName,
 	)
 	DB, err = sql.Open("mysql", dsn)
 	if err != nil {
