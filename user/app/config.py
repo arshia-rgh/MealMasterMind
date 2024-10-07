@@ -44,3 +44,6 @@ USE_CREDENTIALS = True
 
 # Base Url
 BASE_URL = "localhost:8000"
+
+# Cors configs
+origins = ["*"]

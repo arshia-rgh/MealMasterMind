@@ -2,6 +2,9 @@ package config
 
 import (
 	"os"
+	"time"
+
+	"github.com/gin-contrib/cors"
 
 	"github.com/joho/godotenv"
 )
@@ -14,21 +17,31 @@ type DBConfig struct {
 	DBName     string
 }
 
-var DbConfig DBConfig
+var CORSCONFIG cors.Config
+var DBCONFIG DBConfig
 
-func InitDBConfig() error {
+func InitConfigs() error {
 	err := godotenv.Load()
 
 	if err != nil {
 		return err
 	}
 
-	DbConfig = DBConfig{
+	DBCONFIG = DBConfig{
 		DBUser:     os.Getenv("DB_USER"),
 		DBPassword: os.Getenv("DB_PASSWORD"),
 		DBHost:     os.Getenv("DB_HOST"),
 		DBPort:     os.Getenv("DB_PORT"),
 		DBName:     os.Getenv("DB_NAME"),
 	}
+
+	CORSCONFIG = cors.Config{
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "Accept"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}
+
 	return nil
 }
