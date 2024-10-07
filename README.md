@@ -1,6 +1,16 @@
 # Meal Master Mind
 
 
+## will be refactored soon 
+will use more services and separate these services into more services !! Currently for example user service is also sending emails!! (will be fixed)  adding logger service for example
+
+will use amqp and gRPC 
+
+different DB for some services (will add mongoDB soon)
+
+
+will make services more light 
+
 
 ## Structure:
 
