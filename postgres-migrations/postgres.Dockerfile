@@ -3,5 +3,5 @@ FROM postgres:latest
 
 WORKDIR /docker-entrypoint-initdb.d
 
-COPY migrations/ /docker-entrypoint-initdb.d/
+COPY ./*.sql /docker-entrypoint-initdb.d/
 
