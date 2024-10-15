@@ -12,3 +12,14 @@ services:
     env_file:
       - broker/.env
 
+  rabbitmq:
+    image: "rabbitmq:4.0.2-management-alpine"
+    ports:
+      - "5674:5672"
+      - "15673:15672"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    volumes:
+      - ./data/rabbitmq/:/var/lib/rabbitmq/
