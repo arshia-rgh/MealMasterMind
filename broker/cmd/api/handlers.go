@@ -7,12 +7,12 @@ import (
 )
 
 type GateWayRequest struct {
-	ServiceName string             `json:"service_name"`
+	ServiceName string             `json:"service_name" binding:"required"`
 	Auth        AuthServiceRequest `json:"auth_service_request,omitempty"`
 }
 
 type AuthServiceRequest struct {
-	Action      string `json:"action"`
+	Action      string `json:"action" binding:"required"`
 	UserID      int    `json:"user_id,omitempty"`
 	FirstName   string `json:"first_name,omitempty"`
 	LastName    string `json:"last_name,omitempty"`
