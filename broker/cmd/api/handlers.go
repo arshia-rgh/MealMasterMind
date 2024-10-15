@@ -44,7 +44,6 @@ func baseGateway(context *gin.Context) {
 func authGateway(context *gin.Context, auth AuthServiceRequest) {
 	message, _ := json.Marshal(auth)
 	var queueName string
-	// TODO should publish message for all of them
 	switch auth.Action {
 	case "login":
 		queueName = "auth_login"
