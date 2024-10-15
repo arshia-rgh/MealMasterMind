@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -41,20 +42,22 @@ func baseGateway(context *gin.Context) {
 }
 
 func authGateway(context *gin.Context, auth AuthServiceRequest) {
+	message, _ := json.Marshal(auth)
+	var queueName string
 	// TODO should publish message for all of them
 	switch auth.Action {
 	case "login":
-		// TODO
+		queueName = "auth_login"
 	case "register":
-		//TODO
+		queueName = "auth_register"
 	case "forgot-password", "reset-password", "request-reset-password":
-		//TODO
+		queueName = "auth_reset_password"
 	case "change_password":
-		// TODO
+		queueName = "auth_change_password"
 	case "delete_user", "delete":
-		// TODO
+		queueName = "auth_delete"
 	case "update_user", "update":
-		// TODO
+		queueName = "auth_update"
 	default:
 		context.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "unknown action"})
 
