@@ -62,4 +62,10 @@ func authGateway(context *gin.Context, auth AuthServiceRequest) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "unknown action"})
 
 	}
+
+	err := publishMessage(queueName, message)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 }
