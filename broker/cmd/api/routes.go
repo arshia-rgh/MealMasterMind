@@ -24,6 +24,6 @@ func registerRoutes(srv *gin.Engine) {
 		})
 	})
 
-	srv.POST("/handle", gateway)
+	srv.POST("/handle", baseGateway)
 
 }

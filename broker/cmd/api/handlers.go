@@ -1,7 +1,34 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"log"
+	"net/http"
+)
 
-func gateway(context *gin.Context) {
+type GateWayRequest struct {
+	ServiceName string             `json:"service_name"`
+	Auth        AuthServiceRequest `json:"auth_service_request,omitempty"`
+}
 
+type AuthServiceRequest struct {
+	Action      string `json:"action"`
+	UserID      int    `json:"user_id,omitempty"`
+	FirstName   string `json:"first_name,omitempty"`
+	LastName    string `json:"last_name,omitempty"`
+	Username    string `json:"username,omitempty"`
+	Email       string `json:"email,omitempty"`
+	Password    string `json:"password,omitempty"`
+	PhoneNumber string `json:"phone_number,omitempty"`
+}
+
+func baseGateway(context *gin.Context) {
+	var gateWay GateWayRequest
+
+	err := context.ShouldBindJSON(gateWay)
+	if err != nil {
+		log.Println(err)
+		context.JSON(http.StatusBadRequest, gin.H{"error": true, "message": err.Error()})
+		return
+	}
 }
