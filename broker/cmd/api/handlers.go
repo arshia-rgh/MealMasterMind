@@ -26,7 +26,7 @@ type AuthServiceRequest struct {
 func baseGateway(context *gin.Context) {
 	var gateWay GateWayRequest
 
-	err := context.ShouldBindJSON(gateWay)
+	err := context.ShouldBindJSON(&gateWay)
 	if err != nil {
 		log.Println(err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": true, "message": err.Error()})
