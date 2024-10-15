@@ -10,7 +10,38 @@ import (
 )
 
 func publishMessage(queueName string, message []byte) error {
+	conn, err := connect()
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
 
+	ch, err := conn.Channel()
+	if err != nil {
+		return err
+	}
+	defer ch.Close()
+
+	q, err := ch.QueueDeclare(
+		queueName,
+		false,
+		false,
+		false,
+		false,
+		nil,
+	)
+	if err != nil {
+		return err
+	}
+
+	err = ch.Publish(
+		"",
+		q.Name,
+		false,
+		false,
+		amqp.Publishing{ContentType: "application/json", Body: message},
+	)
+	return err
 }
 
 func connect() (*amqp.Connection, error) {
