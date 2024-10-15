@@ -31,4 +31,11 @@ func baseGateway(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": true, "message": err.Error()})
 		return
 	}
+
+	switch gateWay.ServiceName {
+	case "auth":
+		// TODO
+	default:
+		context.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "service unknown"})
+	}
 }
