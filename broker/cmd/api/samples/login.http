@@ -1,0 +1,11 @@
+POST localhost:8080/handle
+Content-Type: application/json
+
+{
+  "service_name": "auth",
+  "auth_service_request": {
+    "action": "login",
+    "email": "test@gmail.com",
+    "password": "test pass"
+  }
+}
