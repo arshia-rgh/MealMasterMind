@@ -3,7 +3,7 @@ BROKER_BINARY=brokerApp
 
 up:
 	@echo "Starting Docker images..."
-	sudo docker compose up -d
+	sudo docker compose up
 	@echo "Docker images started!"
 
 up_build: build_broker
