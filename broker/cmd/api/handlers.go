@@ -67,4 +67,5 @@ func authGateway(context *gin.Context, auth AuthServiceRequest) {
 		log.Println(err)
 		return
 	}
+	// TODO: Send response back to the client
 }
