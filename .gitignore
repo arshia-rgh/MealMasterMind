@@ -1,6 +1,10 @@
 .idea/
 .venv/
 
+# broker service
+broker/.env
+
+
 # user service ignored files
 user/**/__pycache__/
 user/.env
