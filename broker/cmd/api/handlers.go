@@ -34,8 +34,29 @@ func baseGateway(context *gin.Context) {
 
 	switch gateWay.ServiceName {
 	case "auth":
-		// TODO
+		authGateway(context, gateWay.Auth)
 	default:
 		context.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "service unknown"})
+	}
+}
+
+func authGateway(context *gin.Context, auth AuthServiceRequest) {
+	// TODO should publish message for all of them
+	switch auth.Action {
+	case "login":
+		// TODO
+	case "register":
+		//TODO
+	case "forgot-password", "reset-password", "request-reset-password":
+		//TODO
+	case "change_password":
+		// TODO
+	case "delete_user", "delete":
+		// TODO
+	case "update_user", "update":
+		// TODO
+	default:
+		context.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "unknown action"})
+
 	}
 }
