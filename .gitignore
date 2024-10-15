@@ -4,6 +4,7 @@ data/
 
 # broker service
 broker/.env
+broker/brokerApp
 
 
 # user service ignored files
