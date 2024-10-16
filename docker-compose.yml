@@ -27,6 +27,24 @@ services:
     depends_on:
       - rabbitmq
 
+  auth-service:
+    build:
+      context: ./user
+      dockerfile: ./auth.Dockerfile
+    ports:
+      - "8080:8081"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    env_file:
+      - user/.env
+    depends_on:
+      - postgres
+
+  postgres:
+
+
   rabbitmq:
     image: "rabbitmq:4.0.2-management-alpine"
     ports:
