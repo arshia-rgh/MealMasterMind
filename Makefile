@@ -1,4 +1,5 @@
 BROKER_BINARY=brokerApp
+LISTENER_BINARY=listenerApp
 
 
 up:
@@ -21,4 +22,9 @@ down:
 build_broker:
 	@echo "Building broker binary..."
 	cd broker && env GOOS=linux CGO_ENABLED=0 go build -o ${BROKER_BINARY} ./cmd/api
+	@echo "Done!"
+
+build_listener:
+	@echo "Building listener binary..."
+	cd listener && env GOOS=linux CGO_ENABLED=0 go build -o ${LISTENER_BINARY} ./event
 	@echo "Done!"
