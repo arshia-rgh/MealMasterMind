@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func PublishMessage(queueName string, message []byte) error {
+func PublishMessage(queueName string, message []byte) (string, error) {
 	conn, err := connect()
 	if err != nil {
 		log.Panic(err)
@@ -31,7 +31,7 @@ func PublishMessage(queueName string, message []byte) error {
 		nil,
 	)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	err = ch.Publish(
@@ -40,11 +40,13 @@ func PublishMessage(queueName string, message []byte) error {
 		false,
 		false,
 		amqp.Publishing{
-			ContentType: "application/json",
-			Body:        message,
+			ContentType:   "application/json",
+			Body:          message,
+			ReplyTo:       q.Name,
+			CorrelationId: q.Name,
 		},
 	)
-	return err
+	return q.Name, err
 }
 
 func connect() (*amqp.Connection, error) {

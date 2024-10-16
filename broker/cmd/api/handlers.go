@@ -63,7 +63,7 @@ func authGateway(context *gin.Context, auth AuthServiceRequest) {
 		return
 	}
 
-	err := event.PublishMessage(queueName, message)
+	rplyId, err := event.PublishMessage(queueName, message)
 	if err != nil {
 		log.Println(err)
 		return
