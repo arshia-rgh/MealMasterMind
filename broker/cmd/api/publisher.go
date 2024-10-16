@@ -18,7 +18,7 @@ func publishMessage(queueName string, message []byte) error {
 
 	ch, err := conn.Channel()
 	if err != nil {
-		return err
+		log.Panic(err)
 	}
 	defer ch.Close()
 
