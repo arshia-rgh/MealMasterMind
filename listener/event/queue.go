@@ -86,5 +86,7 @@ func requestToService(url string, data any, method string) (map[string]interface
 	var responsePayload map[string]interface{}
 	_ = json.NewDecoder(res.Body).Decode(&responsePayload)
 
+	responsePayload["status_code"] = res.StatusCode
+
 	return responsePayload, nil
 }
