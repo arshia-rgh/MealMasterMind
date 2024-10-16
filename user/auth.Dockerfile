@@ -8,6 +8,6 @@ RUN pip install --no-cache-dir -r /app/requirements/dev.txt
 
 COPY . .
 
-EXPOSE 8081
+EXPOSE 8080
 
-CMD uvicorn user.app.main:app --port 8080 && celery -A user.app.tasks worker --loglevel=info
+CMD ["uvicorn", "app.main:app", "--port", "8080"]
