@@ -1,4 +1,4 @@
-package main
+package event
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func publishMessage(queueName string, message []byte) error {
+func PublishMessage(queueName string, message []byte) error {
 	conn, err := connect()
 	if err != nil {
 		log.Panic(err)
@@ -39,7 +39,10 @@ func publishMessage(queueName string, message []byte) error {
 		q.Name,
 		false,
 		false,
-		amqp.Publishing{ContentType: "application/json", Body: message},
+		amqp.Publishing{
+			ContentType: "application/json",
+			Body:        message,
+		},
 	)
 	return err
 }

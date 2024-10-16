@@ -1,6 +1,7 @@
 package main
 
 import (
+	"broker/event"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -62,7 +63,7 @@ func authGateway(context *gin.Context, auth AuthServiceRequest) {
 		return
 	}
 
-	err := publishMessage(queueName, message)
+	err := event.PublishMessage(queueName, message)
 	if err != nil {
 		log.Println(err)
 		return
