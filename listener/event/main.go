@@ -9,6 +9,18 @@ import (
 	"time"
 )
 
+var serviceQueues = map[string][]string{
+	"auth": {
+		"auth_login",
+		"auth_register",
+		"auth_reset_password",
+		"auth_change_password",
+		"auth_delete",
+		"auth_update",
+	},
+	// Other services
+}
+
 func main() {
 
 	conn, err := connect()
@@ -16,6 +28,23 @@ func main() {
 		log.Panic(err)
 	}
 	defer conn.Close()
+
+	ch, err := conn.Channel()
+	if err != nil {
+		log.Panic(err)
+	}
+
+	service := "auth"
+	authQueues, ok := serviceQueues[service]
+	if !ok {
+		log.Fatalf("No queues found for service: %s", service)
+	}
+
+	for _, queueName := range authQueues {
+		go consumeAndReplyQueue(queueName, ch)
+	}
+
+	select {}
 
 }
 
