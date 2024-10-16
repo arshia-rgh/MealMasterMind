@@ -42,6 +42,31 @@ services:
     depends_on:
       - postgres
 
+  celery:
+    image: "celery:latest"
+    command:
+      - celery -A user.app.tasks worker --loglevel=info
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    env_file:
+      - user/.env
+    depends_on:
+      - redis
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    volumes:
+      - ./data/redis/:/data/
+
+
   postgres:
     build:
       context: ./postgres-migrations
