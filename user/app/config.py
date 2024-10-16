@@ -1,15 +1,11 @@
 import os
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
 # DB configs
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = os.getenv("DB_HOST")
-DB_PORT = os.getenv("DB_PORT")
-DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("POSTGRES_USER")
+DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+DB_HOST = os.getenv("POSTGRES_HOST")
+DB_PORT = os.getenv("POSTGRES_PORT")
+DB_NAME = os.getenv("POSTGRES_DB")
 
 # JWT token configs
 SECRET_KEY = str(os.getenv("SECRET_KEY"))
@@ -22,7 +18,7 @@ PHONE_NUMBER_REGEX = r"^(09|\+989)\d{9,10}$"
 PASSWORD_REGEX = r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
 
 # Celery configs
-CELERY_BROKER = os.getenv("CELERY_BROKER")
+CELERY_BROKER = os.getenv("CELERY_BROKER_URL")
 CELERY_BACKEND = os.getenv("CELERY_BACKEND")
 CELERY_RESULT_EXPIRE = 3600
 CELERY_TASK_SERIALIZER = "json"
@@ -43,7 +39,7 @@ MAIL_SSL_TLS = False
 USE_CREDENTIALS = True
 
 # Base Url
-BASE_URL = "localhost:8000"
+BASE_URL = "auth-service:8080"
 
 # Cors configs
 origins = ["*"]
