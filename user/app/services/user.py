@@ -117,13 +117,7 @@ def request_reset_password(db: Session, email: RequestResetPassword) -> JSONResp
     )
     resset_link = f"http://{config.BASE_URL}/api/confirm-reset-password/{reset_token}/"
 
-    tasks.send_email.delay(
-        subject="Password Reset Request",
-        recipients=[email.email],
-        body={"reset_link": resset_link},
-        template_name="reset_password.html",
-        subtype="html",
-    )
+    # TODO: Implement send email service and use here
 
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Password reset link sent to your email"})
 
