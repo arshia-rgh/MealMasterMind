@@ -4,9 +4,8 @@ from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
-from starlette.responses import JSONResponse
 
-from user.app import config, tasks
+from user.app import config
 from user.app.models.user import User
 from user.app.schemas.user import (
     ChangePassword,
