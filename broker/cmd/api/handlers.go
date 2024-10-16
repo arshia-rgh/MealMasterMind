@@ -59,7 +59,7 @@ func authGateway(context *gin.Context, auth AuthServiceRequest) {
 		queueName = "auth_update"
 	default:
 		context.JSON(http.StatusBadRequest, gin.H{"error": true, "message": "unknown action"})
-
+		return
 	}
 
 	err := publishMessage(queueName, message)
