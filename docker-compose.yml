@@ -43,7 +43,19 @@ services:
       - postgres
 
   postgres:
-
+    build:
+      context: ./postgres-migrations
+      dockerfile: postgres.Dockerfile
+    ports:
+      - "5433:5432"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    env_file:
+      - user/.env
+    volumes:
+      - ./data/postgres/:/var/lib/postgresql/data/
 
   rabbitmq:
     image: "rabbitmq:4.0.2-management-alpine"
