@@ -63,10 +63,15 @@ func authGateway(context *gin.Context, auth AuthServiceRequest) {
 		return
 	}
 
-	rplyId, err := event.PublishMessage(queueName, message)
+	replyId, err := event.PublishMessage(queueName, message)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	// TODO: Send response back to the client
+
+	response := event.Consume(replyId)
+
+	statusCode := response["status_code"].(int)
+
+	context.JSON(statusCode, response)
 }

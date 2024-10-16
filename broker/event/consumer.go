@@ -33,10 +33,10 @@ func Consume(replyId string) map[string]interface{} {
 
 	for msg := range msgs {
 		if msg.CorrelationId == replyId {
-			var jsonResponse map[string]interface{}
-			_ = json.Unmarshal(msg.Body, &jsonResponse)
+			var response map[string]interface{}
+			_ = json.Unmarshal(msg.Body, &response)
 
-			return jsonResponse
+			return response
 		}
 
 	}
