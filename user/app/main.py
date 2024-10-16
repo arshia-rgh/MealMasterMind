@@ -1,8 +1,7 @@
+from app.config import origins
+from app.routes import user_protected, user_public
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from user.app.config import origins
-from user.app.routes import user_protected, user_public
 
 app = FastAPI()
 

@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
 
 import jwt
-
-from user.app import config
+from app import config
 
 SECRET_KEY = config.SECRET_KEY
 ALGORITHM = config.ALGORITHM

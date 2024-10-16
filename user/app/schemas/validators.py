@@ -1,8 +1,7 @@
 import re
 
+from app import config
 from pydantic import BaseModel, ValidationError, field_validator, model_validator
-
-from user.app import config
 
 PASSWORD_REGEX = config.PASSWORD_REGEX
 PHONE_NUMBER_REGEX = config.PHONE_NUMBER_REGEX

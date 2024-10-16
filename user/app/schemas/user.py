@@ -1,8 +1,7 @@
 from typing import Optional
 
+from app.schemas.validators import PasswordMatchingValidator, PasswordValidator, PhoneNumberValidator
 from pydantic import BaseModel, EmailStr, Field
-
-from user.app.schemas.validators import PasswordMatchingValidator, PasswordValidator, PhoneNumberValidator
 
 
 class RegisterUser(PasswordValidator, PhoneNumberValidator):

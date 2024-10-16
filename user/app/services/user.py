@@ -1,13 +1,8 @@
 from typing import Optional
 
-from fastapi import HTTPException, status
-from fastapi.responses import JSONResponse
-from sqlalchemy.exc import NoResultFound
-from sqlalchemy.orm import Session
-
-from user.app import config
-from user.app.models.user import User
-from user.app.schemas.user import (
+from app import config
+from app.models.user import User
+from app.schemas.user import (
     ChangePassword,
     ConfirmResetPassword,
     LoginUser,
@@ -16,9 +11,13 @@ from user.app.schemas.user import (
     ResponseUser,
     UpdateUser,
 )
-from user.app.utils import hash_password
-from user.app.utils.hash_password import verify_password
-from user.app.utils.jwt import create_access_token, verify_access_token
+from app.utils import hash_password
+from app.utils.hash_password import verify_password
+from app.utils.jwt import create_access_token, verify_access_token
+from fastapi import HTTPException, status
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import NoResultFound
+from sqlalchemy.orm import Session
 
 
 def create_user(db: Session, user: RegisterUser) -> JSONResponse | ResponseUser:

@@ -1,7 +1,6 @@
+from app import config
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
-
-from user.app import config
 
 DB_URL = f"postgresql://{config.DB_USER}:{config.DB_PASSWORD}@{config.DB_HOST}:{config.DB_PORT}/{config.DB_NAME}"
 
