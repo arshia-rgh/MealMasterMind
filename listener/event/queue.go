@@ -28,7 +28,7 @@ func consumeAndReplyQueue(queue string, ch *amqp.Channel) {
 		var url, method string
 		switch queue {
 		case "login":
-			url, method = "fastApi login url", "POST"
+			url, method = "http://auth-service/api/login/", "POST"
 		case "register":
 			//
 
