@@ -6,6 +6,8 @@ data/
 broker/.env
 broker/brokerApp
 
+#listener service
+listener/.env
 
 # user service ignored files
 user/**/__pycache__/

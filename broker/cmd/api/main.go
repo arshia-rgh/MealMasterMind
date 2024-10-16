@@ -9,6 +9,7 @@ import (
 const webPort = "8080"
 
 func main() {
+	log.Printf("starting the broker service on the port: %v\n", webPort)
 	srv := gin.Default()
 
 	registerRoutes(srv)
