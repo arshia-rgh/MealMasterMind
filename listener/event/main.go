@@ -11,6 +11,12 @@ import (
 
 func main() {
 
+	conn, err := connect()
+	if err != nil {
+		log.Panic(err)
+	}
+	defer conn.Close()
+
 }
 
 func connect() (*amqp.Connection, error) {

@@ -12,7 +12,7 @@ import (
 func publishMessage(queueName string, message []byte) error {
 	conn, err := connect()
 	if err != nil {
-		return err
+		log.Panic(err)
 	}
 	defer conn.Close()
 
