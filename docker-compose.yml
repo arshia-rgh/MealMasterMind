@@ -1,19 +1,4 @@
 services:
-  broker-service:
-    build:
-      context: ./broker
-      dockerfile: ./broker.Dockerfile
-    ports:
-      - "8080:8080"
-    restart: always
-    deploy:
-      mode: replicated
-      replicas: 1
-    env_file:
-      - broker/.env
-    depends_on:
-      - rabbitmq
-
   listener-service:
     build:
       context: ./listener
@@ -32,7 +17,7 @@ services:
       context: ./user
       dockerfile: ./auth.Dockerfile
     ports:
-      - "8081:8080"
+      - "8080:8080"
     restart: always
     deploy:
       mode: replicated
