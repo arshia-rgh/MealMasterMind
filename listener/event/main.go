@@ -17,11 +17,6 @@ func main() {
 	}
 	defer conn.Close()
 
-	ch, err := conn.Channel()
-	if err != nil {
-		log.Panic(err)
-	}
-
 }
 
 func connect() (*amqp.Connection, error) {
