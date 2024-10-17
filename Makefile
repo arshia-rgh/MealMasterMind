@@ -1,4 +1,3 @@
-BROKER_BINARY=brokerApp
 LISTENER_BINARY=listenerApp
 
 
@@ -7,7 +6,7 @@ up:
 	sudo docker compose up
 	@echo "Docker images started!"
 
-up_build: build_broker
+up_build: build_listener
 	@echo "Stopping docker images (if running...)"
 	sudo docker compose down
 	@echo "Building (when required) and starting docker images..."
@@ -17,11 +16,6 @@ up_build: build_broker
 down:
 	@echo "Stopping docker compose..."
 	sudo docker compose down
-	@echo "Done!"
-
-build_broker:
-	@echo "Building broker binary..."
-	cd broker && env GOOS=linux CGO_ENABLED=0 go build -o ${BROKER_BINARY} ./cmd/api
 	@echo "Done!"
 
 build_listener:
