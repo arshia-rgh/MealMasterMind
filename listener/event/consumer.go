@@ -45,9 +45,9 @@ func consume(routingKeys []string, conn *amqp.Connection) error {
 			for d := range msgs {
 				switch routingKey {
 				case "send-mail":
-					//
+					//TODO gRPC to the mail service
 				case "log":
-					//
+					//TODO gRPC to the logger service
 
 				}
 				d.Ack(false)
