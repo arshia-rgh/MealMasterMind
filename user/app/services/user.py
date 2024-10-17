@@ -19,6 +19,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
 
+from user.event.publish import publish_message
+
 
 def create_user(db: Session, user: RegisterUser) -> JSONResponse | ResponseUser:
     hashed_password = hash_password.hash_password(user.password)
@@ -115,7 +117,7 @@ def request_reset_password(db: Session, email: RequestResetPassword) -> JSONResp
     )
     resset_link = f"http://{config.BASE_URL}/api/confirm-reset-password/{reset_token}/"
 
-    # TODO: Implement send email service and use here
+    publish_message("send-mail", {"email": email.email, "link": resset_link})
 
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Password reset link sent to your email"})
 
