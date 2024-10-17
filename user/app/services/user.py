@@ -14,12 +14,11 @@ from app.schemas.user import (
 from app.utils import hash_password
 from app.utils.hash_password import verify_password
 from app.utils.jwt import create_access_token, verify_access_token
+from event.publish import publish_message
 from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
-
-from user.event.publish import publish_message
 
 
 def create_user(db: Session, user: RegisterUser) -> JSONResponse | ResponseUser:
