@@ -1,11 +1,9 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"log"
-	"net/http"
 )
 
 func consumeAndReplyQueue(queue string, ch *amqp.Channel) {
@@ -62,31 +60,4 @@ func consumeAndReplyQueue(queue string, ch *amqp.Channel) {
 		}
 
 	}
-}
-
-// RequestToService TODO: change to the RPC
-func requestToService(url string, data any, method string) (map[string]interface{}, error) {
-	jsonData, _ := json.Marshal(data)
-
-	req, err := http.NewRequest(method, url, bytes.NewBuffer(jsonData))
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-
-	res, err := client.Do(req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	var responsePayload map[string]interface{}
-	_ = json.NewDecoder(res.Body).Decode(&responsePayload)
-
-	responsePayload["status_code"] = res.StatusCode
-
-	return responsePayload, nil
 }
