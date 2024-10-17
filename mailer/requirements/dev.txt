@@ -1,0 +1,6 @@
+-r prod.txt
+
+# Code formatting
+black==24.8.0
+pre-commit==3.8.0
+isort==5.13.2
