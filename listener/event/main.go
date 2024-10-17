@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+var routingKeys = []string{"send-mail"}
+
 func main() {
 
 	conn, err := connect()
@@ -16,6 +18,11 @@ func main() {
 		log.Panic(err)
 	}
 	defer conn.Close()
+
+	err = consume(routingKeys, conn)
+	if err != nil {
+		log.Println(err)
+	}
 
 }
 
