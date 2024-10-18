@@ -1,9 +1,8 @@
+import grpc
 from concurrent import futures
 
-import grpc
-
-from mailer.mails.mails_pb2_grpc import add_SendMailServicer_to_server
-from mailer.send_mail import SendMail
+from mails.mails_pb2_grpc import add_SendMailServicer_to_server
+from send_mail import SendMail
 
 
 def serve():

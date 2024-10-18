@@ -27,6 +27,18 @@ services:
     depends_on:
       - postgres
 
+  mailer-service:
+    build:
+      context: ./mailer
+      dockerfile: ./mailer.Dockerfile
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    env_file:
+      - mailer/.env
+
+
   postgres:
     build:
       context: ./postgres-migrations
