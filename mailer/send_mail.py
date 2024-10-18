@@ -5,8 +5,8 @@ from email.mime.text import MIMEText
 
 from jinja2 import Environment, FileSystemLoader
 
-from grpc.mails_pb2 import MailResponseResetLink
-from grpc.mails_pb2_grpc import SendMailServicer
+from mails.mails_pb2 import MailResponseResetLink
+from mails.mails_pb2_grpc import SendMailServicer
 
 smtp_server = 'smtp.gmail.com'
 smtp_port = 587
