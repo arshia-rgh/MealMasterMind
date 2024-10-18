@@ -1,3 +1,4 @@
+import json
 import logging
 import math
 import os
@@ -16,10 +17,11 @@ def publish_message(routing_key: str, data: dict):
         return
     try:
         ch.queue_declare(queue=routing_key)
+        message = json.dumps(data).encode("utf-8")
         ch.basic_publish(
             exchange="",
             routing_key=routing_key,
-            body=bytes(data),
+            body=message,
             properties=pika.BasicProperties(content_type="application/json"),
         )
         logging.info(f"published message: {data} to queue: {routing_key}")
