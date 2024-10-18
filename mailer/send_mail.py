@@ -24,7 +24,7 @@ class SendMail(SendMailServicer):
         msg["To"] = request.email
         msg["Subject"] = request.subject
 
-        env = Environment(loader=FileSystemLoader("/templates"))
+        env = Environment(loader=FileSystemLoader("./templates"))
         template = env.get_template("email.html")
 
         context = {

@@ -9,7 +9,7 @@ import (
 )
 
 func RequestToSendMailGRPC(email, subject, link string) error {
-	conn, err := grpc.NewClient("mailer-service:50001",
+	conn, err := grpc.NewClient("mailer-service:50051",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithConnectParams(grpc.ConnectParams{MinConnectTimeout: 5 * time.Second}),
 	)
@@ -21,7 +21,7 @@ func RequestToSendMailGRPC(email, subject, link string) error {
 
 	client := NewSendMailClient(conn)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	responseResetLink, err := client.SendMail(ctx, &MailRequestResetLink{
