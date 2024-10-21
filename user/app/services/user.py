@@ -116,7 +116,12 @@ def request_reset_password(db: Session, email: RequestResetPassword) -> JSONResp
     )
     resset_link = f"http://{config.BASE_URL}/api/confirm-reset-password/{reset_token}/"
 
-    publish_message("send-mail", {"email": email.email, "link": resset_link, "subject": "Password reset link"})
+    ok = publish_message("send-mail", {"email": email.email, "link": resset_link, "subject": "Password reset link"})
+
+    if not ok:
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": "Failed to send email"}
+        )
 
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Password reset link sent to your email"})
 

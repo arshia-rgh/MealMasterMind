@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 def publish_message(routing_key: str, data: dict):
     conn, ch = connect()
     if not conn or not ch:
-        return
+        return None
     try:
         ch.queue_declare(queue=routing_key)
         message = json.dumps(data).encode("utf-8")
@@ -27,6 +27,7 @@ def publish_message(routing_key: str, data: dict):
         logging.info(f"published message: {data} to queue: {routing_key}")
     except Exception as e:
         logging.error(f"Failed to publish message: {e}")
+        return None
 
     finally:
         if ch:
