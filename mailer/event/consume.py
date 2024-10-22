@@ -1,3 +1,4 @@
+import asyncio
 import json
 import logging
 import math
@@ -9,31 +10,40 @@ import pika
 from pika.adapters.blocking_connection import BlockingChannel, BlockingConnection
 from send_mail import send_mail
 
+logging.basicConfig(level=logging.INFO)
+
+
+def callback(ch, method, properties, body):
+    data = json.loads(body)
+    send_mail(data)
+    logging.info(f"Received message: {data}")
+
 
 async def consume(routing_key: str):
-    conn, ch = connect()
+    conn, ch = await connect()
 
     if not ch or not conn:
         return
+    while True:
+        try:
+            ch.queue_declare(queue=routing_key)
 
-    try:
-        ch.queue_declare(queue=routing_key)
+            ch.basic_consume(queue=routing_key, on_message_callback=callback, auto_ack=True)
+            logging.info(f"Started consuming from queue: {routing_key}")
+            ch.start_consuming()
 
-        def callback(ch, method, properties, body):
-            data = json.loads(body)
-            send_mail(data)
-            logging.info(f"Received message: {data}")
+        except Exception as e:
+            logging.error(f"Failed to consume message: {e}")
+            return
 
-        ch.basic_consume(queue=routing_key, on_message_callback=callback, auto_ack=True)
-        logging.info(f"Started consuming from queue: {routing_key}")
-        ch.start_consuming()
-
-    except Exception as e:
-        logging.error(f"Failed to consume message: {e}")
-        return
+        finally:
+            if ch:
+                ch.close()
+            if conn:
+                conn.close()
 
 
-def connect() -> Tuple[BlockingConnection, BlockingChannel]:
+async def connect() -> Tuple[None, None] | Tuple[BlockingConnection, BlockingChannel]:
     counts = 0
 
     rabbitmq_url = f"amqp://{os.getenv('RABBITMQ_USERNAME')}:{os.getenv('RABBITMQ_PASSWORD')}@{os.getenv('RABBITMQ_HOST')}:{os.getenv('RABBITMQ_PORT')}/"

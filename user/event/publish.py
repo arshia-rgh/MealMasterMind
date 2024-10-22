@@ -12,9 +12,9 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def publish_message(routing_key: str, data: dict):
-    conn, ch = connect()
+    conn, ch = await connect()
     if not conn or not ch:
-        return None
+        return False
     try:
         ch.queue_declare(queue=routing_key)
         message = json.dumps(data).encode("utf-8")
@@ -25,9 +25,10 @@ async def publish_message(routing_key: str, data: dict):
             properties=pika.BasicProperties(content_type="application/json"),
         )
         logging.info(f"published message: {data} to queue: {routing_key}")
+        return True
     except Exception as e:
         logging.error(f"Failed to publish message: {e}")
-        return None
+        return False
 
     finally:
         if ch:
@@ -36,7 +37,7 @@ async def publish_message(routing_key: str, data: dict):
             conn.close()
 
 
-def connect() -> Tuple[None, None] | Tuple[BlockingConnection, BlockingChannel]:
+async def connect() -> Tuple[None, None] | Tuple[BlockingConnection, BlockingChannel]:
     counts = 0
 
     rabbitmq_url = f"amqp://{os.getenv('RABBITMQ_USERNAME')}:{os.getenv('RABBITMQ_PASSWORD')}@{os.getenv('RABBITMQ_HOST')}:{os.getenv('RABBITMQ_PORT')}/"
