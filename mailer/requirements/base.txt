@@ -1,2 +1,5 @@
 #send mail with templates
 jinja2
+
+#rabbitmq
+pika==1.3.2
