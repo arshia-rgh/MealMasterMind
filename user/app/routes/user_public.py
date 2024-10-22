@@ -10,12 +10,12 @@ router = APIRouter()
 
 @router.post("/register/", response_model=ResponseUser)
 async def register_user(user: RegisterUser, db: Session = Depends(get_db)) -> JSONResponse | ResponseUser:
-    return create_user(db, user)
+    return await create_user(db, user)
 
 
 @router.post("/login/")
 async def login_user(login_data: LoginUser, db: Session = Depends(get_db)) -> JSONResponse:
-    token = authenticate_user(db, login_data)
+    token = await authenticate_user(db, login_data)
 
     if not token:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid username or password")
@@ -25,11 +25,11 @@ async def login_user(login_data: LoginUser, db: Session = Depends(get_db)) -> JS
 
 @router.post("/request-reset-password/")
 async def forget_password(email: RequestResetPassword, db: Session = Depends(get_db)) -> JSONResponse:
-    return request_reset_password(db, email)
+    return await request_reset_password(db, email)
 
 
 @router.post("/confirm-reset-password/{token}/")
-def confirm_forget_password(
+async def confirm_forget_password(
     token: str, change_password_data: ConfirmResetPassword, db: Session = Depends(get_db)
 ) -> JSONResponse:
-    return confirm_reset_password(db, token, change_password_data)
+    return await confirm_reset_password(db, token, change_password_data)

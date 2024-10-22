@@ -11,7 +11,7 @@ from pika.adapters.blocking_connection import BlockingChannel, BlockingConnectio
 logging.basicConfig(level=logging.INFO)
 
 
-def publish_message(routing_key: str, data: dict):
+async def publish_message(routing_key: str, data: dict):
     conn, ch = connect()
     if not conn or not ch:
         return None

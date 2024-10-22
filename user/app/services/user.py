@@ -21,7 +21,7 @@ from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import Session
 
 
-def create_user(db: Session, user: RegisterUser) -> JSONResponse | ResponseUser:
+async def create_user(db: Session, user: RegisterUser) -> JSONResponse | ResponseUser:
     hashed_password = hash_password.hash_password(user.password)
     db_user = User(
         first_name=user.first_name,
@@ -43,7 +43,7 @@ def create_user(db: Session, user: RegisterUser) -> JSONResponse | ResponseUser:
     return ResponseUser.model_validate(db_user)
 
 
-def authenticate_user(db: Session, login_data: LoginUser) -> Optional[dict]:
+async def authenticate_user(db: Session, login_data: LoginUser) -> Optional[dict]:
     try:
         db_user = db.query(User).filter(User.username == login_data.username).one()
 
@@ -58,7 +58,7 @@ def authenticate_user(db: Session, login_data: LoginUser) -> Optional[dict]:
     return {"access_token": access_token, "token-type": "bearer"}
 
 
-def update_user(db: Session, updated_user: UpdateUser, current_user: ResponseUser) -> ResponseUser:
+async def update_user(db: Session, updated_user: UpdateUser, current_user: ResponseUser) -> ResponseUser:
     db_user = db.query(User).filter(User.id == current_user.id).first()
 
     if not db_user:
@@ -76,7 +76,7 @@ def update_user(db: Session, updated_user: UpdateUser, current_user: ResponseUse
     return ResponseUser.model_validate(db_user)
 
 
-def delete_user(db: Session, current_user: ResponseUser) -> JSONResponse:
+async def delete_user(db: Session, current_user: ResponseUser) -> JSONResponse:
     db_user = db.query(User).filter(User.id == current_user.id).first()
 
     if not db_user:
@@ -88,7 +88,7 @@ def delete_user(db: Session, current_user: ResponseUser) -> JSONResponse:
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "User deleted successfully."})
 
 
-def change_password(db: Session, updated_data: ChangePassword, current_user: ResponseUser) -> JSONResponse:
+async def change_password(db: Session, updated_data: ChangePassword, current_user: ResponseUser) -> JSONResponse:
     db_user = db.query(User).filter(User.id == current_user.id).first()
 
     if not db_user:
@@ -105,7 +105,7 @@ def change_password(db: Session, updated_data: ChangePassword, current_user: Res
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "password changed successfully"})
 
 
-def request_reset_password(db: Session, email: RequestResetPassword) -> JSONResponse:
+async def request_reset_password(db: Session, email: RequestResetPassword) -> JSONResponse:
     db_user = db.query(User).filter(User.email == email.email).first()
 
     if not db_user:
@@ -116,7 +116,9 @@ def request_reset_password(db: Session, email: RequestResetPassword) -> JSONResp
     )
     resset_link = f"http://{config.BASE_URL}/api/confirm-reset-password/{reset_token}/"
 
-    ok = publish_message("send-mail", {"email": email.email, "link": resset_link, "subject": "Password reset link"})
+    ok = await publish_message(
+        "send-mail", {"email": email.email, "link": resset_link, "subject": "Password reset link"}
+    )
 
     if not ok:
         return JSONResponse(
@@ -126,7 +128,7 @@ def request_reset_password(db: Session, email: RequestResetPassword) -> JSONResp
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Password reset link sent to your email"})
 
 
-def confirm_reset_password(db: Session, token: str, change_password_data: ConfirmResetPassword) -> JSONResponse:
+async def confirm_reset_password(db: Session, token: str, change_password_data: ConfirmResetPassword) -> JSONResponse:
     decoded_token = verify_access_token(token)
 
     email = decoded_token.get("sub")

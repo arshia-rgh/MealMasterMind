@@ -8,7 +8,17 @@ import pika
 from pika.adapters.blocking_connection import BlockingChannel, BlockingConnection
 
 
-def connect() -> Tuple[None, None] | Tuple[BlockingConnection, BlockingChannel]:
+async def consume(routing_key: str):
+    conn, ch = connect()
+
+    if not ch or not conn:
+        return None
+
+    try:
+        ch.queue_declare(queue=routing_key)
+
+
+def connect() -> Tuple[BlockingConnection, BlockingChannel]:
     counts = 0
 
     rabbitmq_url = f"amqp://{os.getenv('RABBITMQ_USERNAME')}:{os.getenv('RABBITMQ_PASSWORD')}@{os.getenv('RABBITMQ_HOST')}:{os.getenv('RABBITMQ_PORT')}/"
