@@ -13,6 +13,7 @@ services:
       - user/.env
     depends_on:
       - postgres
+      - rabbitmq
 
   mailer-service:
     build:
