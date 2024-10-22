@@ -1,0 +1,5 @@
+package event
+
+func consume() {
+
+}
