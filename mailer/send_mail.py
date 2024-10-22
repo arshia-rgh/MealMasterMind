@@ -13,19 +13,19 @@ smtp_password = os.getenv("MAIL_PASSWORD")
 from_email = os.getenv("MAIL_USERNAME")
 
 
-def SendMail():
+def send_mail(message: dict):
     msg = MIMEMultipart()
     msg["From"] = from_email
-    msg["To"] = request.email
-    msg["Subject"] = request.subject
+    msg["To"] = message["email"]
+    msg["Subject"] = message["subject"]
 
     env = Environment(loader=FileSystemLoader("./templates"))
     template = env.get_template("email.html")
 
     context = {
-        "link": request.link,
-        "subject": request.subject,
-        "email": request.email,
+        "link": message["link"],
+        "subject": message["subject"],
+        "email": message["email"],
     }
 
     html_content = template.render(context)
@@ -36,4 +36,4 @@ def SendMail():
     with smtplib.SMTP(smtp_server, smtp_port) as server:
         server.starttls()
         server.login(smtp_user, smtp_password)
-        server.sendmail(from_email, request.email, msg.as_string())
+        server.sendmail(from_email, message["email"], msg.as_string())

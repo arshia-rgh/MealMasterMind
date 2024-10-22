@@ -1,3 +1,4 @@
+import json
 import logging
 import math
 import os
@@ -6,16 +7,30 @@ from typing import Tuple
 
 import pika
 from pika.adapters.blocking_connection import BlockingChannel, BlockingConnection
+from send_mail import send_mail
 
 
 async def consume(routing_key: str):
     conn, ch = connect()
 
     if not ch or not conn:
-        return None
+        return
 
     try:
         ch.queue_declare(queue=routing_key)
+
+        def callback(ch, method, properties, body):
+            data = json.loads(body)
+            send_mail(data)
+            logging.info(f"Received message: {data}")
+
+        ch.basic_consume(queue=routing_key, on_message_callback=callback, auto_ack=True)
+        logging.info(f"Started consuming from queue: {routing_key}")
+        ch.start_consuming()
+
+    except Exception as e:
+        logging.error(f"Failed to consume message: {e}")
+        return
 
 
 def connect() -> Tuple[BlockingConnection, BlockingChannel]:
