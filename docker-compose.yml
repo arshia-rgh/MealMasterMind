@@ -24,7 +24,8 @@ services:
       replicas: 1
     env_file:
       - mailer/.env
-
+    depends_on:
+      - rabbitmq
 
   postgres:
     build:
