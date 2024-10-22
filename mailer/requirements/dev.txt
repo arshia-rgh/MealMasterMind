@@ -5,5 +5,3 @@ black==24.8.0
 pre-commit==3.8.0
 isort==5.13.2
 
-#grpc
-grpcio-tools==1.67.0
