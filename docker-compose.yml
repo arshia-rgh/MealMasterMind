@@ -1,17 +1,4 @@
 services:
-  listener-service:
-    build:
-      context: ./listener
-      dockerfile: ./listener.Dockerfile
-    restart: always
-    deploy:
-      mode: replicated
-      replicas: 1
-    env_file:
-      - listener/.env
-    depends_on:
-      - rabbitmq
-
   auth-service:
     build:
       context: ./user
