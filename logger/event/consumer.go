@@ -1,5 +1,5 @@
 package event
 
-func consume() {
+func consume(routingKey string) {
 
 }
