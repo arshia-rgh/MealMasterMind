@@ -52,6 +52,7 @@ func consume(routingKey string, ch *amqp.Channel, db *mongo.Database) error {
 				}
 			}()
 		}
+		log.Println("waiting for logs messages...")
 	}
 }
 
