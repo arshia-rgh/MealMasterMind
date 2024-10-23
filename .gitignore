@@ -29,3 +29,4 @@ mealPlanning/.env
 
 # logger service ignored files
 logger/.env
+logger/loggerApp
