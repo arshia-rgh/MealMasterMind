@@ -9,6 +9,12 @@ import (
 	"os"
 )
 
+type Log struct {
+	Name  string `bson:"name"`
+	Level string `bson:"level"`
+	Data  string `bson:"data"`
+}
+
 func connectToMongoDB() (*mongo.Client, error) {
 	dbUser := os.Getenv("MONGO_USER")
 	dbPassword := os.Getenv("MONGO_PASSWORD")
