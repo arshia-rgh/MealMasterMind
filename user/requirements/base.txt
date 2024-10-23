@@ -19,8 +19,5 @@ python-multipart==0.0.11
 # email-validator for pydantic email field
 email-validator==2.2.0
 
-#rabbitmq
-pika==1.3.2
-
 # my helper package for rabbitmq
 rabbit-helper==1.0.0
