@@ -24,3 +24,8 @@ mailer/.env
 
 # mealPlanning service ignored files
 mealPlanning/.env
+
+
+
+# logger service ignored files
+logger/.env
