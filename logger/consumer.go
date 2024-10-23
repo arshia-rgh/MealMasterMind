@@ -41,6 +41,7 @@ func consume(routingKey string, ch *amqp.Channel, db *mongo.Database) error {
 		log.Println("waiting for logs messages...")
 
 		for msg := range msgs {
+			log.Printf("received message: %v\n", string(msg.Body))
 			var logData Log
 			err := json.Unmarshal(msg.Body, &logData)
 			if err != nil {
