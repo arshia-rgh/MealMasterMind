@@ -42,6 +42,17 @@ services:
       - rabbitmq
       - mongo
 
+  mongo:
+    image: "mongo:latest"
+    ports:
+      - "27018:27017"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    volumes:
+      - ./data/mongo/:/data/db/
+
   postgres:
     build:
       context: ./postgres-migrations
