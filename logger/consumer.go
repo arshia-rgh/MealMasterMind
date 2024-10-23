@@ -1,15 +1,17 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	amqp "github.com/rabbitmq/amqp091-go"
+	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"math"
 	"os"
 	"time"
 )
 
-func consume(routingKey string, ch *amqp.Channel) error {
+func consume(routingKey string, ch *amqp.Channel, db *mongo.Database) error {
 	queue, err := ch.QueueDeclare(
 		routingKey,
 		false,
@@ -38,7 +40,17 @@ func consume(routingKey string, ch *amqp.Channel) error {
 		}
 
 		for msg := range msgs {
-			// go (insert logs to database)
+			var logData Log
+			err := json.Unmarshal(msg.Body, &logData)
+			if err != nil {
+				log.Printf("error unmarshalling the message: %v\n", err)
+			}
+			go func() {
+				err := insertLog(db, logData)
+				if err != nil {
+					log.Printf("error inserting log: %v\n", err)
+				}
+			}()
 		}
 	}
 }
