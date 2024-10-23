@@ -28,6 +28,20 @@ services:
     depends_on:
       - rabbitmq
 
+  logger-service:
+    build:
+      context: ./logger
+      dockerfile: ./logger.Dockerfile
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    env_file:
+      - logger/.env
+    depends_on:
+      - rabbitmq
+      - mongo
+
   postgres:
     build:
       context: ./postgres-migrations
