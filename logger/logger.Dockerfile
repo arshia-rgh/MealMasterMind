@@ -1,2 +1,7 @@
-FROM golang:1.22.2-alpine
+FROM alpine:latest
 
+RUN mkdir /app
+
+COPY loggerApp /app
+
+CMD ["/app/loggerApp"]
