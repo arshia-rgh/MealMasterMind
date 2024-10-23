@@ -36,9 +36,11 @@ async def create_user(db: Session, user: RegisterUser) -> JSONResponse | Respons
     try:
         db.commit()
     except Exception as e:
+        await publish_message("logs", {"name": "auth", "level": "error", "data": f"Failed to create user: {str(e)}"})
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"error": str(e)})
 
     db.refresh(db_user)
+    await publish_message("logs", {"name": "auth", "level": "info", "data": f"User {db_user.id} created"})
 
     return ResponseUser.model_validate(db_user)
 
@@ -48,12 +50,15 @@ async def authenticate_user(db: Session, login_data: LoginUser) -> Optional[dict
         db_user = db.query(User).filter(User.username == login_data.username).one()
 
     except NoResultFound:
+        await publish_message("logs", {"name": "auth", "level": "warning", "data": "User not found during login"})
         return None
 
     if not verify_password(login_data.password, db_user.password):
+        await publish_message("logs", {"name": "auth", "level": "warning", "data": "Invalid password during login"})
         return None
 
     access_token = create_access_token({"sub": db_user.username})
+    await publish_message("logs", {"name": "auth", "level": "info", "data": f"User {db_user.id} authenticated"})
 
     return {"access_token": access_token, "token-type": "bearer"}
 
@@ -62,6 +67,7 @@ async def update_user(db: Session, updated_user: UpdateUser, current_user: Respo
     db_user = db.query(User).filter(User.id == current_user.id).first()
 
     if not db_user:
+        await publish_message("logs", {"name": "auth", "level": "error", "data": "User not found during update"})
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Useer not found")
 
     db_user.first_name = updated_user.first_name or db_user.first_name
@@ -72,6 +78,7 @@ async def update_user(db: Session, updated_user: UpdateUser, current_user: Respo
 
     db.commit()
     db.refresh(db_user)
+    await publish_message("logs", {"name": "auth", "level": "info", "data": f"User {db_user.id} updated"})
 
     return ResponseUser.model_validate(db_user)
 
@@ -80,10 +87,12 @@ async def delete_user(db: Session, current_user: ResponseUser) -> JSONResponse:
     db_user = db.query(User).filter(User.id == current_user.id).first()
 
     if not db_user:
+        await publish_message("logs", {"name": "auth", "level": "error", "data": "User not found during deletion"})
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Useer not found")
 
     db.delete(db_user)
     db.commit()
+    await publish_message("logs", {"name": "auth", "level": "info", "data": f"User {db_user.id} deleted"})
 
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "User deleted successfully."})
 
@@ -92,15 +101,22 @@ async def change_password(db: Session, updated_data: ChangePassword, current_use
     db_user = db.query(User).filter(User.id == current_user.id).first()
 
     if not db_user:
+        await publish_message(
+            "logs", {"name": "auth", "level": "error", "data": "User not found during password change"}
+        )
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Useer not found")
 
     if not verify_password(updated_data.old_password, db_user.password):
+        await publish_message(
+            "logs", {"name": "auth", "level": "warning", "data": "Invalid old password during password change"}
+        )
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"message": "old password is not correct"})
 
     db_user.password = hash_password.hash_password(updated_data.password)
 
     db.commit()
     db.refresh(db_user)
+    await publish_message("logs", {"name": "auth", "level": "info", "data": f"User {db_user.id} changed password"})
 
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "password changed successfully"})
 
@@ -109,6 +125,9 @@ async def request_reset_password(db: Session, email: RequestResetPassword) -> JS
     db_user = db.query(User).filter(User.email == email.email).first()
 
     if not db_user:
+        await publish_message(
+            "logs", {"name": "auth", "level": "error", "data": "User not found during password reset request"}
+        )
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
     reset_token = create_access_token(
@@ -121,9 +140,13 @@ async def request_reset_password(db: Session, email: RequestResetPassword) -> JS
     )
 
     if not ok:
+        await publish_message("logs", {"name": "auth", "level": "error", "data": "Failed to send password reset email"})
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": "Failed to send email"}
         )
+    await publish_message(
+        "logs", {"name": "auth", "level": "info", "data": f"Password reset link sent to {email.email}"}
+    )
 
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Password reset link sent to your email"})
 
@@ -139,5 +162,8 @@ async def confirm_reset_password(db: Session, token: str, change_password_data: 
 
     db.commit()
     db.refresh(db_user)
+    await publish_message(
+        "logs", {"name": "auth", "level": "info", "data": f"User {db_user.id} confirmed password reset"}
+    )
 
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "password changed successfully"})

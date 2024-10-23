@@ -38,6 +38,7 @@ func consume(routingKey string, ch *amqp.Channel, db *mongo.Database) error {
 			log.Println(err)
 			continue
 		}
+		log.Println("waiting for logs messages...")
 
 		for msg := range msgs {
 			var logData Log
@@ -45,6 +46,7 @@ func consume(routingKey string, ch *amqp.Channel, db *mongo.Database) error {
 			if err != nil {
 				log.Printf("error unmarshalling the message: %v\n", err)
 			}
+			logData.CreatedAt = time.Now()
 			go func() {
 				err := insertLog(db, logData)
 				if err != nil {
@@ -52,7 +54,6 @@ func consume(routingKey string, ch *amqp.Channel, db *mongo.Database) error {
 				}
 			}()
 		}
-		log.Println("waiting for logs messages...")
 	}
 }
 
