@@ -1,15 +1,6 @@
 # Meal Master Mind
 
 
-## will be refactored soon 
-1- will use more services and separate these services into more services !! Currently for example user service is also sending emails!! (will be fixed)  adding logger service for example
-
-2- will use amqp and gRPC 
-
-3- different DB for some services (will add mongoDB soon)
-
-4- will make services more light 
-
 
 ## Structure:
 
@@ -72,6 +63,3 @@
 
 
 
-# bugs:
-pre-commit cant find any files
-(use pre-commit run --all-files ) to do this manually before pushing until the pre-commit debug
