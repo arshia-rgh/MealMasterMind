@@ -7,18 +7,6 @@ import (
 )
 
 func main() {
-	conn, err := connect()
-	if err != nil {
-		log.Panic(err)
-	}
-	defer conn.Close()
-
-	ch, err := conn.Channel()
-	if err != nil {
-		log.Panic(err)
-	}
-	defer ch.Close()
-
 	mongoClient, err := connectToMongoDB()
 
 	if err != nil {
@@ -36,8 +24,4 @@ func main() {
 	}()
 	db := mongoClient.Database("logs")
 
-	err = consume("logs", ch, db)
-	if err != nil {
-		log.Println(err)
-	}
 }
