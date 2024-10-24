@@ -25,6 +25,7 @@ func insertLog(db *mongo.Database, logData Log) error {
 		log.Println("failed to insert into logs", err)
 		return err
 	}
+	log.Printf("inserted the %v to the mongo database\n", logData.Data)
 
 	return nil
 }
