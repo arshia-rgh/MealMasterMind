@@ -32,11 +32,12 @@ func main() {
 
 }
 
-func callback(data any) {
-	logData, ok := data.(Log)
-	if !ok {
-		log.Printf("invalid data type: %T", data)
-		return
+func callback(data map[string]any) {
+	logData := Log{
+		Name:      data["name"].(string),
+		Level:     data["level"].(string),
+		Data:      data["data"].(string),
+		CreatedAt: time.Now(),
 	}
 
 	err := insertLog(DB, logData)

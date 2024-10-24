@@ -6,6 +6,10 @@ github.com/arshia-rgh/rabbit-helper-go v1.0.1 h1:twnd9q35EYQLGbWMR1xzXqOJmOfGl5J
 github.com/arshia-rgh/rabbit-helper-go v1.0.1/go.mod h1:jUfaRWI6UfcADQYrN1ekwbP+K+PAN5VwmAinMUB9oGg=
 github.com/arshia-rgh/rabbit-helper-go v1.0.2 h1:5w8aXQMmOSy1tvAXFYLPuw1dlQrZ1LyVT9INXIPXMHM=
 github.com/arshia-rgh/rabbit-helper-go v1.0.2/go.mod h1:jUfaRWI6UfcADQYrN1ekwbP+K+PAN5VwmAinMUB9oGg=
+github.com/arshia-rgh/rabbit-helper-go v1.0.5 h1:zScIn1fNoGphKjUSPHo/1JgF07d0BrH7gs+54+PitZ8=
+github.com/arshia-rgh/rabbit-helper-go v1.0.5/go.mod h1:jUfaRWI6UfcADQYrN1ekwbP+K+PAN5VwmAinMUB9oGg=
+github.com/arshia-rgh/rabbit-helper-go v1.0.6 h1:1Glf61p6chnCYwAeKdrh/ILta1pDXElBx/t8aicrZR4=
+github.com/arshia-rgh/rabbit-helper-go v1.0.6/go.mod h1:jUfaRWI6UfcADQYrN1ekwbP+K+PAN5VwmAinMUB9oGg=
 github.com/golang/snappy v0.0.4 h1:yAGX7huGHXlcLOEtBnF4w7FQwA26wojNCwOYAEhLjQM=
 github.com/golang/snappy v0.0.4/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=
 github.com/klauspost/compress v1.13.6 h1:P76CopJELS0TiO2mebmnzgWaajssP/EszplttgQxcgc=

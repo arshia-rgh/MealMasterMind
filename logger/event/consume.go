@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func Consume(routingKey string, callback func(data any)) {
+func Consume(routingKey string, callback func(data map[string]any)) {
 	rabbitMQURL := fmt.Sprintf("amqp://%v:%v@%v:%v/",
 		os.Getenv("RABBITMQ_USERNAME"),
 		os.Getenv("RABBITMQ_PASSWORD"),
