@@ -2,9 +2,13 @@ package main
 
 import (
 	"context"
+	"go.mongodb.org/mongo-driver/mongo"
 	"log"
+	"logger-service/event"
 	"time"
 )
+
+var DB *mongo.Database
 
 func main() {
 	mongoClient, err := connectToMongoDB()
@@ -22,6 +26,22 @@ func main() {
 			panic(err)
 		}
 	}()
-	db := mongoClient.Database("logs")
+	DB = mongoClient.Database("logs")
 
+	event.Consume("logs", callback)
+
+}
+
+func callback(data any) {
+	logData, ok := data.(Log)
+	if !ok {
+		log.Printf("invalid data type: %T", data)
+		return
+	}
+
+	err := insertLog(DB, logData)
+
+	if err != nil {
+		log.Printf("error inserting log : %v", err)
+	}
 }
