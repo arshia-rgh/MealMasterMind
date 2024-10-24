@@ -3,6 +3,7 @@ package event
 import (
 	"fmt"
 	Rabbit "github.com/arshia-rgh/rabbit-helper-go/rabbit_helper"
+	"log"
 	"os"
 )
 
@@ -17,10 +18,9 @@ func Consume(routingKey string, callback func(data any)) {
 	rabbit := Rabbit.New(rabbitMQURL)
 	defer rabbit.Close()
 
-	go func() {
-		err := rabbit.Consume(routingKey, callback)
-		if err != nil {
-			return
-		}
-	}()
+	err := rabbit.Consume(routingKey, callback)
+
+	if err != nil {
+		log.Panic(err)
+	}
 }
