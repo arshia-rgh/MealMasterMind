@@ -15,6 +15,7 @@ func Consume(routingKey string, callback func(data any)) {
 	)
 
 	rabbit := Rabbit.New(rabbitMQURL)
+	defer rabbit.Close()
 
 	go func() {
 		err := rabbit.Consume(routingKey, callback)
