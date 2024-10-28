@@ -9,8 +9,7 @@ message AuthReq{
 }
 
 message AuthRes{
-  bool authenticated = 1;
-  string userID = 2;
+  int64 userID = 1;
 }
 
 service Authentication{
