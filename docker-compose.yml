@@ -15,6 +15,22 @@ services:
       - postgres
       - rabbitmq
 
+  meal-service:
+    build:
+      context: ./mealPlanning
+      dockerfile: ./meal.Dockerfile
+    ports:
+      - "8081:8080"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    env_file:
+      - mealPlanning/.env
+    depends_on:
+      - postgres
+      - rabbitmq
+
   mailer-service:
     build:
       context: ./mailer
