@@ -21,3 +21,7 @@ email-validator==2.2.0
 
 # my helper package for rabbitmq
 rabbit-helper==1.0.0
+
+# gRPC
+grpcio==1.67.0
+grpcio-tools
