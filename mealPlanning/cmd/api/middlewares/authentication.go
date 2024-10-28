@@ -2,7 +2,6 @@ package middlewares
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"time"
 
@@ -54,12 +53,4 @@ func getCurrentUser(token string) (int64, error) {
 		return 0, err
 	}
 	return res.GetUserID(), nil
-}
-
-func responseBodyToString(body []byte) (map[string]interface{}, error) {
-	var responseData map[string]interface{}
-	if err := json.Unmarshal(body, &responseData); err != nil {
-		return nil, err
-	}
-	return responseData, nil
 }
