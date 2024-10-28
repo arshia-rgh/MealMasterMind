@@ -32,7 +32,7 @@ func Authentication(context *gin.Context) {
 }
 
 func getCurrentUser(token string) (int64, error) {
-	conn, err := grpc.NewClient("auth-service:50001",
+	conn, err := grpc.NewClient("auth-service:50051",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithConnectParams(grpc.ConnectParams{MinConnectTimeout: 5 * time.Second}),
 	)
