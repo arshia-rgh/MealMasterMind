@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "/user";
+
+message AuthReq{
+  string token = 1;
+}
+
+message AuthRes{
+  int64 userID = 1;
+}
+
+service Authentication{
+  rpc IsAuthenticated(AuthReq) returns (AuthRes);
+}
