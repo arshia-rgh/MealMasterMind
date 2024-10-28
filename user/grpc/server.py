@@ -5,6 +5,7 @@ from meal import meal_pb2_grpc
 from meal.service import AuthenticationService
 
 
+# TODO: Make this class more scalable
 class GRPC:
     def __init__(self, host=None):
         self.host = host
