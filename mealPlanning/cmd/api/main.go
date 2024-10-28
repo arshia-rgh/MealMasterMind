@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"mealPlanning/cmd/api/config"
 	"mealPlanning/cmd/api/db"
 	"mealPlanning/cmd/api/middlewares"
@@ -10,6 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const webPort = "8080"
+
 func main() {
 	err := config.InitConfigs()
 
@@ -18,6 +21,8 @@ func main() {
 	}
 
 	db.InitDB()
+
+	defer db.DB.Close()
 
 	server := gin.Default()
 	server.Use(cors.New(config.CORSCONFIG))
@@ -29,7 +34,7 @@ func main() {
 	publicGroup := server.Group("/api")
 	routes.RegisterRoutesPublic(publicGroup)
 
-	err = server.Run()
+	err = server.Run(fmt.Sprintf(":%v", webPort))
 	if err != nil {
 		return
 	}
