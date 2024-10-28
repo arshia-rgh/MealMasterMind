@@ -2,7 +2,7 @@ package routes
 
 import (
 	"log"
-	"mealPlanning/models"
+	"mealPlanning/cmd/api/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

@@ -3,7 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"mealPlanning/config"
+	"mealPlanning/cmd/api/config"
 
 	_ "github.com/go-sql-driver/mysql"
 )

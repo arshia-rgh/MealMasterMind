@@ -1,13 +1,12 @@
 package main
 
 import (
-	"mealPlanning/config"
-	"mealPlanning/db"
-	"mealPlanning/middlewares"
-	"mealPlanning/routes"
+	"mealPlanning/cmd/api/config"
+	"mealPlanning/cmd/api/db"
+	"mealPlanning/cmd/api/middlewares"
+	"mealPlanning/cmd/api/routes"
 
 	"github.com/gin-contrib/cors"
-
 	"github.com/gin-gonic/gin"
 )
 

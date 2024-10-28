@@ -1,6 +1,8 @@
 package models
 
-import "mealPlanning/db"
+import (
+	"mealPlanning/cmd/api/db"
+)
 
 type Meal struct {
 	ID         int64  `json:"id"`
