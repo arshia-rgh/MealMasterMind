@@ -1,6 +1,7 @@
 package models
 
 import (
+	"context"
 	"mealPlanning/cmd/api/db"
 )
 
@@ -14,7 +15,7 @@ type Meal struct {
 func (m *Meal) Save() error {
 	query := "INSERT INTO meals(day,recipe_id, meal_plan_id) VALUES (?, ?, ?)"
 
-	result, err := db.DB.Exec(query, m.Day, m.RecipeId, m.MealPlanId)
+	result, err := db.DB.ExecContext(context.TODO(), query, m.Day, m.RecipeId, m.MealPlanId)
 	if err != nil {
 		return err
 	}
