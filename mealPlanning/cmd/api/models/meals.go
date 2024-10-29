@@ -13,15 +13,9 @@ type Meal struct {
 }
 
 func (m *Meal) Save() error {
-	query := "INSERT INTO meals(day,recipe_id, meal_plan_id) VALUES (?, ?, ?)"
+	query := "INSERT INTO meals(day, recipe_id, meal_plan_id) VALUES ($1, $2, $3) RETURNING id"
 
-	result, err := db.DB.ExecContext(context.TODO(), query, m.Day, m.RecipeId, m.MealPlanId)
-	if err != nil {
-		return err
-	}
-
-	ID, err := result.LastInsertId()
-	m.ID = ID
+	err := db.DB.QueryRowContext(context.TODO(), query, m.Day, m.RecipeId, m.MealPlanId).Scan(&m.ID)
 
 	return err
 }

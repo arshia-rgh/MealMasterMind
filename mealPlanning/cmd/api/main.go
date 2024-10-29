@@ -21,6 +21,9 @@ func main() {
 	}
 
 	db.InitDB()
+	if db.DB == nil {
+		panic("could not connect to the postgres")
+	}
 
 	defer db.DB.Close()
 

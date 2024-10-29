@@ -1,6 +1,6 @@
 POST localhost:8081/api/protected/meals
 content-type: application/json
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhcnNoaWEtcmdoIiwiZXhwIjoxNzMwMTk2NjM2fQ.LEClhffPSZEvfGNZkS4bC2o1rhVR4ctWDk2EdzEJtgI
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhcnNoaWEtcmdoIiwiZXhwIjoxNzMwMjAxNDIzfQ.wO5fx2Pb8X0tru3t7Gdy3GgE9IkCj2UZLdVn2hv9Klc
 
 {
   "day": "monday",

@@ -60,5 +60,5 @@ func getCurrentUser(token string) (int64, error) {
 		return 0, err
 	}
 	log.Printf("recieved response from auth-service: %v", res.GetUserID())
-	return res.GetUserID(), nil
+	return res.UserID, nil
 }
