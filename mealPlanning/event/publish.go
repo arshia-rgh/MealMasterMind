@@ -19,12 +19,9 @@ func Publish(routingKey string, data any) {
 	rabbit := Rabbit.New(rabbitMQURL)
 	defer rabbit.Close()
 
-	go func() {
-		err := rabbit.Publish(routingKey, data)
-		if err != nil {
-			log.Printf("error publishing mssage to the %v queue, message: %v", routingKey, data)
+	err := rabbit.Publish(routingKey, data)
+	if err != nil {
+		log.Printf("error publishing mssage to the %v queue, message: %v, err: %v", routingKey, data, err.Error())
 
-		}
-	}()
-
+	}
 }
