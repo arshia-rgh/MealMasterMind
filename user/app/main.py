@@ -45,4 +45,4 @@ async def lifespan(app: FastAPI):
 
 app.include_router(user_public.router, prefix="/api")
 app.include_router(user_protected.router, prefix="/api")
-app.add_event_handler("startup", lifespan)
+app.add_event_handler("startup", lambda: lifespan(app))

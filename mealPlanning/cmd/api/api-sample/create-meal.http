@@ -1,4 +1,4 @@
-POST localhost:8080/api/protected/meals
+POST localhost:8081/api/protected/meals
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhcnNoaWFfcmdoIiwiZXhwIjoxNzI4MDA4ODE0fQ.72W135ZP1PQ3naSRjfu-fF3F_gutlCYiFzyUf6hNPeM
 
