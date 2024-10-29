@@ -70,3 +70,14 @@ func (m *Meal) GetAll() ([]*Meal, error) {
 	return meals, nil
 
 }
+
+func (m *Meal) Delete(ID int64) error {
+	query := "DELETE FROM meals WHERE id = ?"
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	_, err := DB.ExecContext(ctx, query, ID)
+
+	return err
+
+}
