@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"time"
 
@@ -34,7 +35,7 @@ func Authentication(context *gin.Context) {
 func getCurrentUser(token string) (int64, error) {
 	conn, err := grpc.NewClient("auth-service:50051",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
-		grpc.WithConnectParams(grpc.ConnectParams{MinConnectTimeout: 5 * time.Second}),
+		grpc.WithConnectParams(grpc.ConnectParams{MinConnectTimeout: 10 * time.Second}),
 	)
 
 	defer conn.Close()
@@ -43,14 +44,17 @@ func getCurrentUser(token string) (int64, error) {
 		return 0, err
 	}
 
+	log.Println("Connected to auth-service")
+
 	client := user.NewAuthenticationClient(conn)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	res, err := client.IsAuthenticated(ctx, &user.AuthReq{Token: token})
 	if err != nil {
 		return 0, err
 	}
+	log.Printf("recieved response from auth-service: %v", res)
 	return res.GetUserID(), nil
 }

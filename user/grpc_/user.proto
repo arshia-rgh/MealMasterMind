@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package meal;
+package user;
 
 message AuthReq{
   string token = 1;

@@ -3,7 +3,7 @@
 import warnings
 
 import grpc
-import meal_pb2 as meal__pb2
+import user_pb2 as user__pb2
 
 GRPC_GENERATED_VERSION = "1.67.0"
 GRPC_VERSION = grpc.__version__
@@ -19,7 +19,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f"The grpc package installed is at version {GRPC_VERSION},"
-        + f" but the generated code in meal_pb2_grpc.py depends on"
+        + f" but the generated code in user_pb2_grpc.py depends on"
         + f" grpcio>={GRPC_GENERATED_VERSION}."
         + f" Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}"
         + f" or downgrade your generated code using grpcio-tools<={GRPC_VERSION}."
@@ -36,9 +36,9 @@ class AuthenticationStub(object):
             channel: A grpc.Channel.
         """
         self.IsAuthenticated = channel.unary_unary(
-            "/meal.Authentication/IsAuthenticated",
-            request_serializer=meal__pb2.AuthReq.SerializeToString,
-            response_deserializer=meal__pb2.AuthRes.FromString,
+            "/user.Authentication/IsAuthenticated",
+            request_serializer=user__pb2.AuthReq.SerializeToString,
+            response_deserializer=user__pb2.AuthRes.FromString,
             _registered_method=True,
         )
 
@@ -57,13 +57,13 @@ def add_AuthenticationServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "IsAuthenticated": grpc.unary_unary_rpc_method_handler(
             servicer.IsAuthenticated,
-            request_deserializer=meal__pb2.AuthReq.FromString,
-            response_serializer=meal__pb2.AuthRes.SerializeToString,
+            request_deserializer=user__pb2.AuthReq.FromString,
+            response_serializer=user__pb2.AuthRes.SerializeToString,
         ),
     }
-    generic_handler = grpc.method_handlers_generic_handler("meal.Authentication", rpc_method_handlers)
+    generic_handler = grpc.method_handlers_generic_handler("user.Authentication", rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers("meal.Authentication", rpc_method_handlers)
+    server.add_registered_method_handlers("user.Authentication", rpc_method_handlers)
 
 
 # This class is part of an EXPERIMENTAL API.
@@ -86,9 +86,9 @@ class Authentication(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/meal.Authentication/IsAuthenticated",
-            meal__pb2.AuthReq.SerializeToString,
-            meal__pb2.AuthRes.FromString,
+            "/user.Authentication/IsAuthenticated",
+            user__pb2.AuthReq.SerializeToString,
+            user__pb2.AuthRes.FromString,
             options,
             channel_credentials,
             insecure,
