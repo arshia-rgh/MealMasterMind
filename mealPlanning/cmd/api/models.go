@@ -45,3 +45,28 @@ func (m *Meal) GetByID(ID int64) (*Meal, error) {
 	return &meal, nil
 
 }
+
+func (m *Meal) GetAll() ([]*Meal, error) {
+	query := "SELECT * FROM meals"
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	rows, err := DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	var meals []*Meal
+	for rows.Next() {
+		var meal Meal
+		err := rows.Scan(&meal.ID, &meal.Day, &meal.RecipeId, &meal.MealPlanId)
+		if err != nil {
+			return nil, err
+		}
+		meals = append(meals, &meal)
+
+	}
+
+	return meals, nil
+
+}
