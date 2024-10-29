@@ -3,6 +3,7 @@ from concurrent import futures
 from typing import Final
 
 import grpc
+from app.db.database import get_db
 from grpc_ import user_pb2, user_pb2_grpc
 
 port: Final = 50051
@@ -14,8 +15,9 @@ logging.basicConfig(level=logging.INFO)
 class AuthenticationService(user_pb2_grpc.AuthenticationServicer):
     def IsAuthenticated(self, request, context):
         token = request.token
+        db = next(get_db())
         try:
-            user = get_current_user(token)
+            user = get_current_user(token, db)
             return user_pb2.AuthRes(userID=user.id)
         except Exception as e:
             logging.info(str(e))
