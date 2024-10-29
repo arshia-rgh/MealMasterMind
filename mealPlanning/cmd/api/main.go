@@ -1,11 +1,9 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
-	"mealPlanning/cmd/api/config"
-	"mealPlanning/cmd/api/db"
-	"mealPlanning/cmd/api/middlewares"
-	"mealPlanning/cmd/api/routes"
+	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -13,31 +11,33 @@ import (
 
 const webPort = "8080"
 
+var DB *sql.DB
+
 func main() {
-	err := config.InitConfigs()
-
-	if err != nil {
-		panic(err)
-	}
-
-	db.InitDB()
-	if db.DB == nil {
+	DB = InitDB()
+	if DB == nil {
 		panic("could not connect to the postgres")
 	}
 
-	defer db.DB.Close()
+	defer DB.Close()
 
 	server := gin.Default()
-	server.Use(cors.New(config.CORSCONFIG))
+	server.Use(cors.New(cors.Config{
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "Accept"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	protectedGroup := server.Group("/api/protected")
-	protectedGroup.Use(middlewares.Authentication)
-	routes.RegisterRoutesProtected(protectedGroup)
+	protectedGroup.Use(Authentication)
+	RegisterRoutesProtected(protectedGroup)
 
 	publicGroup := server.Group("/api")
-	routes.RegisterRoutesPublic(publicGroup)
+	RegisterRoutesPublic(publicGroup)
 
-	err = server.Run(fmt.Sprintf(":%v", webPort))
+	err := server.Run(fmt.Sprintf(":%v", webPort))
 	if err != nil {
 		return
 	}

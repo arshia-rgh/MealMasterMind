@@ -1,15 +1,14 @@
-package routes
+package main
 
 import (
 	"log"
-	"mealPlanning/cmd/api/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func createMeal(context *gin.Context) {
-	var meal models.Meal
+	var meal Meal
 
 	err := context.ShouldBindJSON(&meal)
 	if err != nil {

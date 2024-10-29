@@ -1,6 +1,8 @@
-package routes
+package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func RegisterRoutesProtected(server *gin.RouterGroup) {
 	server.POST("/meals", createMeal)

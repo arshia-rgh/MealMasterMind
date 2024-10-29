@@ -1,16 +1,14 @@
-package db
+package main
 
 import (
 	"database/sql"
 	"fmt"
 	"log"
-	"mealPlanning/cmd/api/config"
+	"os"
 	"time"
 
 	_ "github.com/lib/pq"
 )
-
-var DB *sql.DB
 
 func openDB(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("postgres", dsn)
@@ -21,15 +19,15 @@ func openDB(dsn string) (*sql.DB, error) {
 	return db, nil
 }
 
-func InitDB() {
+func InitDB() *sql.DB {
 	var counts int
 
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
-		config.DBCONFIG.DBUser,
-		config.DBCONFIG.DBPassword,
-		config.DBCONFIG.DBHost,
-		config.DBCONFIG.DBPort,
-		config.DBCONFIG.DBName,
+		os.Getenv("POSTGRES_USER"),
+		os.Getenv("POSTGRES_PASSWORD"),
+		os.Getenv("POSTGRES_HOST"),
+		os.Getenv("POSTGRES_PORT"),
+		os.Getenv("POSTGRES_DB"),
 	)
 	for {
 		connection, err := openDB(dsn)
@@ -39,13 +37,12 @@ func InitDB() {
 			counts++
 		} else {
 			log.Println("Connected to Postgres !")
-			DB = connection
-			return
+			return connection
 		}
 
 		if counts > 10 {
 			log.Println(err)
-			return
+			return nil
 		}
 
 		log.Println("Try again in two seconds ...")

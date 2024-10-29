@@ -1,8 +1,7 @@
-package models
+package main
 
 import (
 	"context"
-	"mealPlanning/cmd/api/db"
 )
 
 type Meal struct {
@@ -12,10 +11,16 @@ type Meal struct {
 	MealPlanId int    `json:"meal_plan_id" binding:"required"`
 }
 
+type MealPlan struct {
+	ID     int64  `json:"id"`
+	UserID int64  `json:"user_id"`
+	Name   string `json:"name" binding:"required"`
+}
+
 func (m *Meal) Save() error {
 	query := "INSERT INTO meals(day, recipe_id, meal_plan_id) VALUES ($1, $2, $3) RETURNING id"
 
-	err := db.DB.QueryRowContext(context.TODO(), query, m.Day, m.RecipeId, m.MealPlanId).Scan(&m.ID)
+	err := DB.QueryRowContext(context.TODO(), query, m.Day, m.RecipeId, m.MealPlanId).Scan(&m.ID)
 
 	return err
 }
