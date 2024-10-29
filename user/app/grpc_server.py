@@ -2,8 +2,7 @@ from concurrent import futures
 from typing import Final
 
 import grpc
-
-from user.grpc_.meal import meal_pb2_grpc
+from grpc_.meal import meal_pb2_grpc
 
 port: Final = 50051
 from dependencies import get_current_user

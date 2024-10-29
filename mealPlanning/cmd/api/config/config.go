@@ -5,8 +5,6 @@ import (
 	"time"
 
 	"github.com/gin-contrib/cors"
-
-	"github.com/joho/godotenv"
 )
 
 type DBConfig struct {
@@ -21,18 +19,13 @@ var CORSCONFIG cors.Config
 var DBCONFIG DBConfig
 
 func InitConfigs() error {
-	err := godotenv.Load()
-
-	if err != nil {
-		return err
-	}
 
 	DBCONFIG = DBConfig{
-		DBUser:     os.Getenv("DB_USER"),
-		DBPassword: os.Getenv("DB_PASSWORD"),
-		DBHost:     os.Getenv("DB_HOST"),
-		DBPort:     os.Getenv("DB_PORT"),
-		DBName:     os.Getenv("DB_NAME"),
+		DBUser:     os.Getenv("POSTGRES_USER"),
+		DBPassword: os.Getenv("POSTGRES_PASSWORD"),
+		DBHost:     os.Getenv("POSTGRES_HOST"),
+		DBPort:     os.Getenv("POSTGRES_PORT"),
+		DBName:     os.Getenv("POSTGRES_DB"),
 	}
 
 	CORSCONFIG = cors.Config{

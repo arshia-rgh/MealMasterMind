@@ -1,10 +1,16 @@
+import asyncio
+from contextlib import asynccontextmanager
+
 from app.config import origins
 from app.routes import user_protected, user_public
 from event.publish import publish_message
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+from .grpc_server import serve
+
 app = FastAPI()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -29,5 +35,14 @@ async def log_requests(request: Request, call_next):
     return response
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    loop = asyncio.get_event_loop()
+    grpc_server_task = loop.run_in_executor(None, serve)
+    yield
+    grpc_server_task.cancel()
+
+
 app.include_router(user_public.router, prefix="/api")
 app.include_router(user_protected.router, prefix="/api")
+app.add_event_handler("startup", lifespan)

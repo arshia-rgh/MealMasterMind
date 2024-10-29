@@ -24,6 +24,7 @@ mailer/.env
 
 # mealPlanning service ignored files
 mealPlanning/.env
+mealPlanning/mealApp
 
 
 
