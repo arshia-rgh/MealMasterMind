@@ -5,11 +5,6 @@ import (
 	"time"
 )
 
-type Models struct {
-	Meal     Meal
-	MealPlan MealPlan
-}
-
 const dbTimeout = time.Second * 3
 
 type Meal struct {
