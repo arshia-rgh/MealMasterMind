@@ -27,6 +27,10 @@ func Authentication(context *gin.Context) {
 	if err != nil {
 		context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized", "err": err.Error()})
 	}
+	if userID == 0 {
+		context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized: user not found or invalid token"})
+
+	}
 
 	context.Set("user", userID)
 	context.Next()
@@ -55,6 +59,6 @@ func getCurrentUser(token string) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	log.Printf("recieved response from auth-service: %v", res)
+	log.Printf("recieved response from auth-service: %v", res.GetUserID())
 	return res.GetUserID(), nil
 }
