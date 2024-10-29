@@ -6,11 +6,15 @@ import grpc
 from user.grpc_.meal import meal_pb2_grpc
 
 port: Final = 50051
+from dependencies import get_current_user
 
 
 class AuthenticationService:
     def IsAuthenticated(self, request, context):
-        pass
+        token = request.token
+        user = get_current_user(token)
+
+        return user.id
 
 
 def serve():
