@@ -81,3 +81,13 @@ func (m *Meal) Delete(ID int64) error {
 	return err
 
 }
+
+func (m *Meal) Update(ID int64) error {
+	query := "UPDATE meals SET day = ?, recipe_id = ?, meal_plan_id = ? WHERE id = ?"
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	_, err := DB.ExecContext(ctx, query, ID)
+
+	return err
+}
