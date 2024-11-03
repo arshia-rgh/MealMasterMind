@@ -14,12 +14,6 @@ type Meal struct {
 	MealPlanId int    `json:"meal_plan_id,omitempty"`
 }
 
-type MealPlan struct {
-	ID     int64  `json:"id,omitempty"`
-	UserID int64  `json:"user_id,omitempty"`
-	Name   string `json:"name,omitempty"`
-}
-
 func (m *Meal) Save() error {
 	query := "INSERT INTO meals(day, recipe_id, meal_plan_id) VALUES ($1, $2, $3) RETURNING id"
 
@@ -90,4 +84,10 @@ func (m *Meal) Update(ID int64) error {
 	_, err := DB.ExecContext(ctx, query, ID)
 
 	return err
+}
+
+type MealPlan struct {
+	ID     int64  `json:"id,omitempty"`
+	UserID int64  `json:"user_id,omitempty"`
+	Name   string `json:"name,omitempty"`
 }
