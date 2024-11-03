@@ -3,37 +3,37 @@ repos:
     rev: v4.6.0
     hooks:
       - id: check-yaml
-        files: ^(user|notification|recipe)/.*\.yaml$
-        exclude: ^(?!user|notification|recipe)/
+        files: ^(user|mailer|recipe)/.*\.yaml$
+        exclude: ^(?!user|mailer|recipe)/
       - id: end-of-file-fixer
-        files: ^(user|notification|recipe)/.*$
-        exclude: ^(?!user|notification|recipe)/
+        files: ^(user|mailer|recipe)/.*$
+        exclude: ^(?!user|mailer|recipe)/
       - id: trailing-whitespace
-        files: ^(user|notification|recipe)/.*$
-        exclude: ^(?!user|notification|recipe)/
+        files: ^(user|mailer|recipe)/.*$
+        exclude: ^(?!user|mailer|recipe)/
 
   - repo: https://github.com/psf/black-pre-commit-mirror
     rev: 24.8.0
     hooks:
       - id: black
         language_version: python3.12
-        files: ^(user|notification|recipe)/.*\.py$
-        exclude: ^(?!user|notification|recipe)/
+        files: ^(user|mailer|recipe)/.*\.py$
+        exclude: ^(?!user|mailer|recipe)/
 
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
       - id: isort
         name: isort (python)
-        files: ^(user|notification|recipe)/.*\.py$
-        exclude: ^(?!user|notification|recipe)/
+        files: ^(user|mailer|recipe)/.*\.py$
+        exclude: ^(?!user|mailer|recipe)/
 
   - repo: https://github.com/dnephin/pre-commit-golang
     rev: v0.5.1
     hooks:
       - id: go-fmt
-        files: ^(mealPlanning|shoppingList)/.*\.go$
+        files: ^(mealPlanning|shoppingList|logger)/.*\.go$
         exclude: ^(?!mealPlanning|shoppingList)/
       - id: go-imports
-        files: ^(mealPlanning|shoppingList)/.*\.go$
+        files: ^(mealPlanning|shoppingList|logger)/.*\.go$
         exclude: ^(?!mealPlanning|shoppingList)/
