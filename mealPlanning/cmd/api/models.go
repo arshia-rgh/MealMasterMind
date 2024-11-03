@@ -91,3 +91,12 @@ type MealPlan struct {
 	UserID int64  `json:"user_id,omitempty"`
 	Name   string `json:"name,omitempty"`
 }
+
+func (mp *MealPlan) Save() error {
+	query := "INSERT INTO meal_plans(user_id, name) VALUES ($1, $2) RETURNING id"
+
+	err := DB.QueryRowContext(context.TODO(), query, mp.UserID, mp.Name).Scan(&mp.ID)
+
+	return err
+
+}
