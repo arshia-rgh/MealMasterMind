@@ -100,3 +100,20 @@ func (mp *MealPlan) Save() error {
 	return err
 
 }
+
+func (mp *MealPlan) GetByID(ID int64) (*MealPlan, error) {
+	query := "SELECT * FROM meal_plans WHERE id = ?"
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	var mealPlan MealPlan
+
+	err := DB.QueryRowContext(ctx, query, ID).Scan(&mealPlan.ID, &mealPlan.UserID, &mealPlan.Name)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &mealPlan, nil
+
+}
