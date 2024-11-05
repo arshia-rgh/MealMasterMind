@@ -1,6 +1,6 @@
 .idea/
 .venv/
-data/
+/data
 
 # broker service
 broker/.env
