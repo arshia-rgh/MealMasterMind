@@ -38,6 +38,7 @@ type MealRepository interface {
 	GetAll() ([]*Meal, error)
 	Delete(ID int64) error
 	Update(meal *Meal) error
+	IsOwnedMeal(ID int64, userID int64) bool
 }
 
 type MealPlanRepository interface {
