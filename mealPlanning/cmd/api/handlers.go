@@ -44,3 +44,7 @@ func createMeal(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"message": "meal created successfully", "meal": meal})
 
 }
+
+func getMeals(context *gin.Context) {
+
+}
