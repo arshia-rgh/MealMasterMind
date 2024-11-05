@@ -65,7 +65,7 @@ func (r *mealRepository) GetAll() ([]*Meal, error) {
 }
 
 func (r *mealRepository) Delete(ID int64) error {
-	query := "DELETE FROM meals WHERE id = ?"
+	query := "DELETE FROM meals WHERE id = $1"
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -76,7 +76,7 @@ func (r *mealRepository) Delete(ID int64) error {
 }
 
 func (r *mealRepository) Update(ID int64) error {
-	query := "UPDATE meals SET day = ?, recipe_id = ?, meal_plan_id = ? WHERE id = ?"
+	query := "UPDATE meals SET day = $1, recipe_id = $2, meal_plan_id = $2 WHERE id = $3"
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 

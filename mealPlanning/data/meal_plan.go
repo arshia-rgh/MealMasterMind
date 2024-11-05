@@ -23,7 +23,7 @@ func (r *mealPlanRepository) Save(mp MealPlan) error {
 }
 
 func (r *mealPlanRepository) GetByID(ID int64) (*MealPlan, error) {
-	query := "SELECT * FROM meal_plans WHERE id = ?"
+	query := "SELECT * FROM meal_plans WHERE id = $1"
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
