@@ -38,3 +38,27 @@ func (r *mealPlanRepository) GetByID(ID int64) (*MealPlan, error) {
 	return &mealPlan, nil
 
 }
+
+func (r *mealPlanRepository) GetAll() ([]*MealPlan, error) {
+	query := "SELECT * FROM meal_plans"
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	var mealPlans []*MealPlan
+	for rows.Next() {
+		var mealPlan MealPlan
+		err := rows.Scan(&mealPlan.ID, &mealPlan.UserID, &mealPlan.Name)
+		if err != nil {
+			return nil, err
+		}
+		mealPlans = append(mealPlans, &mealPlan)
+
+	}
+	return mealPlans, nil
+
+}

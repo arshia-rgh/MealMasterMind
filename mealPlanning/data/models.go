@@ -43,4 +43,5 @@ type MealRepository interface {
 type MealPlanRepository interface {
 	Save(mp MealPlan) error
 	GetByID(ID int64) (*MealPlan, error)
+	GetAll() ([]*MealPlan, error)
 }
