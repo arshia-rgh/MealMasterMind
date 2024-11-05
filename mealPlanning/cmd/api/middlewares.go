@@ -62,3 +62,7 @@ func getCurrentUser(token string) (int64, error) {
 	log.Printf("recieved response from auth-service: %v", res.GetUserID())
 	return res.UserID, nil
 }
+
+func RequestResponseLogger(c *gin.Context) {
+
+}
