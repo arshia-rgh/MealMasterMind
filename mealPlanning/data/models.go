@@ -33,15 +33,17 @@ type MealPlan struct {
 }
 
 type MealRepository interface {
-	Save(meal Meal) error
+	Save(meal *Meal) error
 	GetByID(ID int64) (*Meal, error)
 	GetAll() ([]*Meal, error)
 	Delete(ID int64) error
-	Update(ID int64) error
+	Update(meal *Meal) error
 }
 
 type MealPlanRepository interface {
-	Save(mp MealPlan) error
+	Save(mp *MealPlan) error
 	GetByID(ID int64) (*MealPlan, error)
 	GetAll() ([]*MealPlan, error)
+	Delete(ID int64) error
+	Update(mp *MealPlan) error
 }

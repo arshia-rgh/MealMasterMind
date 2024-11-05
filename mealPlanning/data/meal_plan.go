@@ -13,7 +13,7 @@ func NewMealPlanRepository(db *sql.DB) MealPlanRepository {
 	return &mealPlanRepository{db: db}
 }
 
-func (r *mealPlanRepository) Save(mp MealPlan) error {
+func (r *mealPlanRepository) Save(mp *MealPlan) error {
 	query := "INSERT INTO meal_plans(user_id, name) VALUES ($1, $2) RETURNING id"
 
 	err := r.db.QueryRowContext(context.TODO(), query, mp.UserID, mp.Name).Scan(&mp.ID)
@@ -60,5 +60,25 @@ func (r *mealPlanRepository) GetAll() ([]*MealPlan, error) {
 
 	}
 	return mealPlans, nil
+
+}
+
+func (r *mealPlanRepository) Delete(ID int64) error {
+	query := "DELETE FROM meal_plans WHERE id = $1"
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	_, err := r.db.ExecContext(ctx, query, ID)
+	return err
+
+}
+
+func (r *mealPlanRepository) Update(mp *MealPlan) error {
+	query := "UPDATE meal_plans SET user_id = $1, name = $2 WHERE id = $3"
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	_, err := r.db.ExecContext(ctx, query, mp.UserID, mp.Name, mp.ID)
+	return err
 
 }
