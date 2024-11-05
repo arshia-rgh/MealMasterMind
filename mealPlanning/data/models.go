@@ -8,14 +8,14 @@ import (
 const dbTimeout = time.Second * 3
 
 type Models struct {
-	Meal     MealRepository
-	MealPlan MealPlanRepository
+	MealRepo     MealRepository
+	MealPlanRepo MealPlanRepository
 }
 
 func New(dbPool *sql.DB) Models {
 	return Models{
-		Meal:     NewMealRepository(dbPool),
-		MealPlan: NewMealPlanRepository(dbPool),
+		MealRepo:     NewMealRepository(dbPool),
+		MealPlanRepo: NewMealPlanRepository(dbPool),
 	}
 }
 

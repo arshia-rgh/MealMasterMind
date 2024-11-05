@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"mealPlanning/data"
 	"mealPlanning/event"
 	"net/http"
 
@@ -10,7 +11,7 @@ import (
 )
 
 func createMeal(context *gin.Context) {
-	var meal Meal
+	var meal data.Meal
 
 	err := context.ShouldBindJSON(&meal)
 	if err != nil {
@@ -23,7 +24,7 @@ func createMeal(context *gin.Context) {
 		return
 	}
 
-	err = meal.Save()
+	err = Models.MealRepo.Save(meal)
 	if err != nil {
 		log.Printf("Server error: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "server error"})
