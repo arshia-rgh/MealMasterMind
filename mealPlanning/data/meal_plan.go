@@ -16,7 +16,7 @@ func NewMealPlanRepository(db *sql.DB) MealPlanRepository {
 func (r *mealPlanRepository) Save(mp MealPlan) error {
 	query := "INSERT INTO meal_plans(user_id, name) VALUES ($1, $2) RETURNING id"
 
-	err := db.QueryRowContext(context.TODO(), query, mp.UserID, mp.Name).Scan(&mp.ID)
+	err := r.db.QueryRowContext(context.TODO(), query, mp.UserID, mp.Name).Scan(&mp.ID)
 
 	return err
 
@@ -29,7 +29,7 @@ func (r *mealPlanRepository) GetByID(ID int64) (*MealPlan, error) {
 
 	var mealPlan MealPlan
 
-	err := db.QueryRowContext(ctx, query, ID).Scan(&mealPlan.ID, &mealPlan.UserID, &mealPlan.Name)
+	err := r.db.QueryRowContext(ctx, query, ID).Scan(&mealPlan.ID, &mealPlan.UserID, &mealPlan.Name)
 
 	if err != nil {
 		return nil, err
