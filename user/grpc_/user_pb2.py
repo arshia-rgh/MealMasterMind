@@ -17,7 +17,7 @@ _sym_db = _symbol_database.Default()
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\nuser.proto\x12\x04user"\x18\n\x07\x41uthReq\x12\r\n\x05token\x18\x01 \x01(\t"\x19\n\x07\x41uthRes\x12\x0e\n\x06userID\x18\x01 \x01(\x03\x32\x41\n\x0e\x41uthentication\x12/\n\x0fIsAuthenticated\x12\r.user.AuthReq\x1a\r.user.AuthResb\x06proto3'
+    b'\n\nuser.proto\x12\x04user"\x18\n\x07\x41uthReq\x12\r\n\x05token\x18\x01 \x01(\t",\n\x07\x41uthRes\x12\x0e\n\x06userID\x18\x01 \x01(\x03\x12\x11\n\tuserEmail\x18\x02 \x01(\t2A\n\x0e\x41uthentication\x12/\n\x0fIsAuthenticated\x12\r.user.AuthReq\x1a\r.user.AuthResb\x06proto3'
 )
 
 _globals = globals()
@@ -28,7 +28,7 @@ if not _descriptor._USE_C_DESCRIPTORS:
     _globals["_AUTHREQ"]._serialized_start = 20
     _globals["_AUTHREQ"]._serialized_end = 44
     _globals["_AUTHRES"]._serialized_start = 46
-    _globals["_AUTHRES"]._serialized_end = 71
-    _globals["_AUTHENTICATION"]._serialized_start = 73
-    _globals["_AUTHENTICATION"]._serialized_end = 138
+    _globals["_AUTHRES"]._serialized_end = 90
+    _globals["_AUTHENTICATION"]._serialized_start = 92
+    _globals["_AUTHENTICATION"]._serialized_end = 157
 # @@protoc_insertion_point(module_scope)

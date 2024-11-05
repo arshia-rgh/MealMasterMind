@@ -11,7 +11,9 @@ class AuthReq(_message.Message):
     def __init__(self, token: _Optional[str] = ...) -> None: ...
 
 class AuthRes(_message.Message):
-    __slots__ = ("userID",)
+    __slots__ = ("userID", "userEmail")
     USERID_FIELD_NUMBER: _ClassVar[int]
+    USEREMAIL_FIELD_NUMBER: _ClassVar[int]
     userID: int
-    def __init__(self, userID: _Optional[int] = ...) -> None: ...
+    userEmail: str
+    def __init__(self, userID: _Optional[int] = ..., userEmail: _Optional[str] = ...) -> None: ...

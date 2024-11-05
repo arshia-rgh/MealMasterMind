@@ -18,10 +18,10 @@ class AuthenticationService(user_pb2_grpc.AuthenticationServicer):
         db = next(get_db())
         try:
             user = get_current_user(token, db)
-            return user_pb2.AuthRes(userID=user.id)
+            return user_pb2.AuthRes(userID=user.id, userEmail=user.email)
         except Exception as e:
             logging.info(str(e))
-            return user_pb2.AuthRes(userID=0)
+            return user_pb2.AuthRes(userID=0, userEmail="")
 
 
 def serve():

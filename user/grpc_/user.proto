@@ -8,6 +8,7 @@ message AuthReq{
 
 message AuthRes{
   int64 userID = 1;
+  string userEmail = 2;
 }
 
 service Authentication{

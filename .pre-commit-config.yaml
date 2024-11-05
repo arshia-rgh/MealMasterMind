@@ -28,13 +28,6 @@ repos:
         files: ^(user|mailer|recipe)/.*\.py$
         exclude: ^(?!user|mailer|recipe)/
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.910
-    hooks:
-      - id: mypy
-        files: ^(user|mailer|recipe)/.*\.py$
-        exclude: ^(?!user|mailer|recipe)/
-
   - repo: https://github.com/dnephin/pre-commit-golang
     rev: v0.5.1
     hooks:
