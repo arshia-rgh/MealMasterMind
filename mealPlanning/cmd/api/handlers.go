@@ -24,7 +24,7 @@ func createMeal(context *gin.Context) {
 		return
 	}
 
-	err = Models.MealRepo.Save(meal)
+	err = Models.MealRepo.Save(&meal)
 	if err != nil {
 		log.Printf("Server error: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "server error"})
