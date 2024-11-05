@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.35.1
 // 	protoc        v3.21.12
-// source: grpc/user/user.proto
+// source: user.proto
 
 package user
 
@@ -31,7 +31,7 @@ type AuthReq struct {
 
 func (x *AuthReq) Reset() {
 	*x = AuthReq{}
-	mi := &file_grpc_user_user_proto_msgTypes[0]
+	mi := &file_user_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +43,7 @@ func (x *AuthReq) String() string {
 func (*AuthReq) ProtoMessage() {}
 
 func (x *AuthReq) ProtoReflect() protoreflect.Message {
-	mi := &file_grpc_user_user_proto_msgTypes[0]
+	mi := &file_user_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +56,7 @@ func (x *AuthReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthReq.ProtoReflect.Descriptor instead.
 func (*AuthReq) Descriptor() ([]byte, []int) {
-	return file_grpc_user_user_proto_rawDescGZIP(), []int{0}
+	return file_user_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *AuthReq) GetToken() string {
@@ -71,12 +71,13 @@ type AuthRes struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserID int64 `protobuf:"varint,1,opt,name=userID,proto3" json:"userID,omitempty"`
+	UserID    int64  `protobuf:"varint,1,opt,name=userID,proto3" json:"userID,omitempty"`
+	UserEmail string `protobuf:"bytes,2,opt,name=userEmail,proto3" json:"userEmail,omitempty"`
 }
 
 func (x *AuthRes) Reset() {
 	*x = AuthRes{}
-	mi := &file_grpc_user_user_proto_msgTypes[1]
+	mi := &file_user_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -88,7 +89,7 @@ func (x *AuthRes) String() string {
 func (*AuthRes) ProtoMessage() {}
 
 func (x *AuthRes) ProtoReflect() protoreflect.Message {
-	mi := &file_grpc_user_user_proto_msgTypes[1]
+	mi := &file_user_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -101,7 +102,7 @@ func (x *AuthRes) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthRes.ProtoReflect.Descriptor instead.
 func (*AuthRes) Descriptor() ([]byte, []int) {
-	return file_grpc_user_user_proto_rawDescGZIP(), []int{1}
+	return file_user_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *AuthRes) GetUserID() int64 {
@@ -111,41 +112,49 @@ func (x *AuthRes) GetUserID() int64 {
 	return 0
 }
 
-var File_grpc_user_user_proto protoreflect.FileDescriptor
+func (x *AuthRes) GetUserEmail() string {
+	if x != nil {
+		return x.UserEmail
+	}
+	return ""
+}
 
-var file_grpc_user_user_proto_rawDesc = []byte{
-	0x0a, 0x14, 0x67, 0x72, 0x70, 0x63, 0x2f, 0x75, 0x73, 0x65, 0x72, 0x2f, 0x75, 0x73, 0x65, 0x72,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x04, 0x75, 0x73, 0x65, 0x72, 0x22, 0x1f, 0x0a, 0x07,
-	0x41, 0x75, 0x74, 0x68, 0x52, 0x65, 0x71, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0x21, 0x0a,
-	0x07, 0x41, 0x75, 0x74, 0x68, 0x52, 0x65, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x75, 0x73, 0x65, 0x72,
-	0x49, 0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x44,
-	0x32, 0x41, 0x0a, 0x0e, 0x41, 0x75, 0x74, 0x68, 0x65, 0x6e, 0x74, 0x69, 0x63, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x12, 0x2f, 0x0a, 0x0f, 0x49, 0x73, 0x41, 0x75, 0x74, 0x68, 0x65, 0x6e, 0x74, 0x69,
-	0x63, 0x61, 0x74, 0x65, 0x64, 0x12, 0x0d, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x41, 0x75, 0x74,
-	0x68, 0x52, 0x65, 0x71, 0x1a, 0x0d, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x41, 0x75, 0x74, 0x68,
-	0x52, 0x65, 0x73, 0x42, 0x07, 0x5a, 0x05, 0x2f, 0x75, 0x73, 0x65, 0x72, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+var File_user_proto protoreflect.FileDescriptor
+
+var file_user_proto_rawDesc = []byte{
+	0x0a, 0x0a, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x04, 0x75, 0x73,
+	0x65, 0x72, 0x22, 0x1f, 0x0a, 0x07, 0x41, 0x75, 0x74, 0x68, 0x52, 0x65, 0x71, 0x12, 0x14, 0x0a,
+	0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f,
+	0x6b, 0x65, 0x6e, 0x22, 0x3f, 0x0a, 0x07, 0x41, 0x75, 0x74, 0x68, 0x52, 0x65, 0x73, 0x12, 0x16,
+	0x0a, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06,
+	0x75, 0x73, 0x65, 0x72, 0x49, 0x44, 0x12, 0x1c, 0x0a, 0x09, 0x75, 0x73, 0x65, 0x72, 0x45, 0x6d,
+	0x61, 0x69, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x75, 0x73, 0x65, 0x72, 0x45,
+	0x6d, 0x61, 0x69, 0x6c, 0x32, 0x41, 0x0a, 0x0e, 0x41, 0x75, 0x74, 0x68, 0x65, 0x6e, 0x74, 0x69,
+	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x2f, 0x0a, 0x0f, 0x49, 0x73, 0x41, 0x75, 0x74, 0x68,
+	0x65, 0x6e, 0x74, 0x69, 0x63, 0x61, 0x74, 0x65, 0x64, 0x12, 0x0d, 0x2e, 0x75, 0x73, 0x65, 0x72,
+	0x2e, 0x41, 0x75, 0x74, 0x68, 0x52, 0x65, 0x71, 0x1a, 0x0d, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e,
+	0x41, 0x75, 0x74, 0x68, 0x52, 0x65, 0x73, 0x42, 0x07, 0x5a, 0x05, 0x2f, 0x75, 0x73, 0x65, 0x72,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_grpc_user_user_proto_rawDescOnce sync.Once
-	file_grpc_user_user_proto_rawDescData = file_grpc_user_user_proto_rawDesc
+	file_user_proto_rawDescOnce sync.Once
+	file_user_proto_rawDescData = file_user_proto_rawDesc
 )
 
-func file_grpc_user_user_proto_rawDescGZIP() []byte {
-	file_grpc_user_user_proto_rawDescOnce.Do(func() {
-		file_grpc_user_user_proto_rawDescData = protoimpl.X.CompressGZIP(file_grpc_user_user_proto_rawDescData)
+func file_user_proto_rawDescGZIP() []byte {
+	file_user_proto_rawDescOnce.Do(func() {
+		file_user_proto_rawDescData = protoimpl.X.CompressGZIP(file_user_proto_rawDescData)
 	})
-	return file_grpc_user_user_proto_rawDescData
+	return file_user_proto_rawDescData
 }
 
-var file_grpc_user_user_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_grpc_user_user_proto_goTypes = []any{
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_user_proto_goTypes = []any{
 	(*AuthReq)(nil), // 0: user.AuthReq
 	(*AuthRes)(nil), // 1: user.AuthRes
 }
-var file_grpc_user_user_proto_depIdxs = []int32{
+var file_user_proto_depIdxs = []int32{
 	0, // 0: user.Authentication.IsAuthenticated:input_type -> user.AuthReq
 	1, // 1: user.Authentication.IsAuthenticated:output_type -> user.AuthRes
 	1, // [1:2] is the sub-list for method output_type
@@ -155,27 +164,27 @@ var file_grpc_user_user_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_grpc_user_user_proto_init() }
-func file_grpc_user_user_proto_init() {
-	if File_grpc_user_user_proto != nil {
+func init() { file_user_proto_init() }
+func file_user_proto_init() {
+	if File_user_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_grpc_user_user_proto_rawDesc,
+			RawDescriptor: file_user_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_grpc_user_user_proto_goTypes,
-		DependencyIndexes: file_grpc_user_user_proto_depIdxs,
-		MessageInfos:      file_grpc_user_user_proto_msgTypes,
+		GoTypes:           file_user_proto_goTypes,
+		DependencyIndexes: file_user_proto_depIdxs,
+		MessageInfos:      file_user_proto_msgTypes,
 	}.Build()
-	File_grpc_user_user_proto = out.File
-	file_grpc_user_user_proto_rawDesc = nil
-	file_grpc_user_user_proto_goTypes = nil
-	file_grpc_user_user_proto_depIdxs = nil
+	File_user_proto = out.File
+	file_user_proto_rawDesc = nil
+	file_user_proto_goTypes = nil
+	file_user_proto_depIdxs = nil
 }
