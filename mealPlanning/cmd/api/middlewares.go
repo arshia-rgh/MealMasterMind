@@ -1,8 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"context"
+	"fmt"
+	"io"
 	"log"
+	"mealPlanning/event"
 	"net/http"
 	"time"
 
@@ -22,21 +26,26 @@ func Authentication(context *gin.Context) {
 		return
 	}
 
-	userID, err := getCurrentUser(token)
+	userID, userEmail, err := getCurrentUser(token)
 
 	if err != nil {
 		context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized", "err": err.Error()})
 	}
 	if userID == 0 {
 		context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized: user not found or invalid token"})
-
+	}
+	if userEmail == "" {
+		context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized: user not found or invalid token"})
 	}
 
-	context.Set("user", userID)
+	context.Set("user", map[string]any{
+		"id":    userID,
+		"email": userEmail,
+	})
 	context.Next()
 }
 
-func getCurrentUser(token string) (int64, error) {
+func getCurrentUser(token string) (int64, string, error) {
 	conn, err := grpc.NewClient("auth-service:50051",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithConnectParams(grpc.ConnectParams{MinConnectTimeout: 10 * time.Second}),
@@ -45,7 +54,7 @@ func getCurrentUser(token string) (int64, error) {
 	defer conn.Close()
 
 	if err != nil {
-		return 0, err
+		return 0, "", err
 	}
 
 	log.Println("Connected to auth-service")
@@ -57,12 +66,58 @@ func getCurrentUser(token string) (int64, error) {
 
 	res, err := client.IsAuthenticated(ctx, &user.AuthReq{Token: token})
 	if err != nil {
-		return 0, err
+		return 0, "", err
 	}
 	log.Printf("recieved response from auth-service: %v", res.GetUserID())
-	return res.UserID, nil
+	return res.UserID, res.UserEmail, nil
 }
 
 func RequestResponseLogger(c *gin.Context) {
+	var requestedUser string
+	userInfo, exists := c.Get("user")
 
+	userEmail := userInfo.(map[string]any)["email"]
+
+	if !exists {
+		requestedUser = "Anonymous"
+	} else {
+		requestedUser = userEmail.(string)
+	}
+
+	// --Request--
+	bodyBytes, _ := io.ReadAll(c.Request.Body)
+	c.Request.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+	log.Printf("Request: %s %s %s, user: %s", c.Request.Method, c.Request.URL, string(bodyBytes), requestedUser)
+
+	go event.Publish("logs", map[string]string{
+		"name":  "meal",
+		"level": "info",
+		"data":  fmt.Sprintf("Request: %s %s %s, user: %s", c.Request.Method, c.Request.URL, string(bodyBytes), requestedUser),
+	})
+	// --Response--
+	responseBody := &bytes.Buffer{}
+	writer := &responseWriter{body: responseBody, ResponseWriter: c.Writer}
+	c.Writer = writer
+
+	start := time.Now()
+	c.Next()
+	latency := time.Since(start)
+
+	log.Printf("Response: %d %s %s", c.Writer.Status(), latency, responseBody.String())
+	go event.Publish("logs", map[string]string{
+		"name":  "meal",
+		"level": "info",
+		"data":  fmt.Sprintf("Response: %d %s %s", c.Writer.Status(), latency, responseBody.String()),
+	})
+
+}
+
+type responseWriter struct {
+	gin.ResponseWriter
+	body *bytes.Buffer
+}
+
+func (w *responseWriter) Write(b []byte) (int, error) {
+	w.body.Write(b)
+	return w.ResponseWriter.Write(b)
 }
