@@ -1,14 +1,19 @@
 package data
 
-import "context"
+import (
+	"context"
+	"database/sql"
+)
 
-type MealPlan struct {
-	ID     int64  `json:"id,omitempty"`
-	UserID int64  `json:"user_id,omitempty"`
-	Name   string `json:"name,omitempty"`
+type mealPlanRepository struct {
+	db *sql.DB
 }
 
-func (mp *MealPlan) Save() error {
+func NewMealPlanRepository(db *sql.DB) MealPlanRepository {
+	return &mealPlanRepository{db: db}
+}
+
+func (r *mealPlanRepository) Save(mp MealPlan) error {
 	query := "INSERT INTO meal_plans(user_id, name) VALUES ($1, $2) RETURNING id"
 
 	err := db.QueryRowContext(context.TODO(), query, mp.UserID, mp.Name).Scan(&mp.ID)
@@ -17,7 +22,7 @@ func (mp *MealPlan) Save() error {
 
 }
 
-func (mp *MealPlan) GetByID(ID int64) (*MealPlan, error) {
+func (r *mealPlanRepository) GetByID(ID int64) (*MealPlan, error) {
 	query := "SELECT * FROM meal_plans WHERE id = ?"
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
