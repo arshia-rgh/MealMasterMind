@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"mealPlanning/data"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -12,12 +13,15 @@ import (
 const webPort = "8080"
 
 var DB *sql.DB
+var Models data.Models
 
 func main() {
 	DB = InitDB()
 	if DB == nil {
 		panic("could not connect to the postgres")
 	}
+
+	Models = data.New(DB)
 
 	defer DB.Close()
 
