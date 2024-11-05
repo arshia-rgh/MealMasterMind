@@ -36,9 +36,11 @@ func main() {
 
 	protectedGroup := server.Group("/api/protected")
 	protectedGroup.Use(Authentication)
+	protectedGroup.Use(RequestResponseLogger)
 	RegisterRoutesProtected(protectedGroup)
 
 	publicGroup := server.Group("/api")
+	publicGroup.Use(RequestResponseLogger)
 	RegisterRoutesPublic(publicGroup)
 
 	err := server.Run(fmt.Sprintf(":%v", webPort))

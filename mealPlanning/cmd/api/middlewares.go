@@ -68,7 +68,7 @@ func getCurrentUser(token string) (int64, string, error) {
 	if err != nil {
 		return 0, "", err
 	}
-	log.Printf("recieved response from auth-service: %v", res.GetUserID())
+	log.Printf("recieved response from auth-service: user(id, email) = (%v, %v)", res.GetUserID(), res.GetUserEmail())
 	return res.UserID, res.UserEmail, nil
 }
 
@@ -76,12 +76,11 @@ func RequestResponseLogger(c *gin.Context) {
 	var requestedUser string
 	userInfo, exists := c.Get("user")
 
-	userEmail := userInfo.(map[string]any)["email"]
-
 	if !exists {
 		requestedUser = "Anonymous"
 	} else {
-		requestedUser = userEmail.(string)
+		userEmail := userInfo.(map[string]any)["email"].(string)
+		requestedUser = userEmail
 	}
 
 	// --Request--
