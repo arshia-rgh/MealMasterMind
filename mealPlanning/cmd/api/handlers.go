@@ -46,5 +46,22 @@ func createMeal(context *gin.Context) {
 }
 
 func getMeals(context *gin.Context) {
+	meals, err := Models.MealRepo.GetAll()
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "server error", "error": err.Error()})
+	}
+	user, _ := context.Get("user")
+
+	userID := user.(map[string]any)["id"].(int64)
+
+	var ownedMeals []*data.Meal
+	for _, v := range meals {
+		if Models.MealRepo.IsOwnedMeal(v.ID, userID) {
+			ownedMeals = append(ownedMeals, v)
+		}
+	}
+
+	context.JSON(http.StatusOK, ownedMeals)
 
 }
