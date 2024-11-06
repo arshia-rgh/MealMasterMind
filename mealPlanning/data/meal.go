@@ -84,3 +84,7 @@ func (r *mealRepository) Update(meal *Meal) error {
 
 	return err
 }
+
+func (r *mealRepository) GetAllByUser(userID int64) ([]*Meal, error) {
+
+}

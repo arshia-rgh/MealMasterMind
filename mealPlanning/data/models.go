@@ -38,6 +38,7 @@ type MealRepository interface {
 	GetAll() ([]*Meal, error)
 	Delete(ID int64) error
 	Update(meal *Meal) error
+	GetAllByUser(userID int64) ([]*Meal, error)
 }
 
 type MealPlanRepository interface {
