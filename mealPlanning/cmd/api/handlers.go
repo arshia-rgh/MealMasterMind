@@ -78,6 +78,11 @@ func getMeal(context *gin.Context) {
 	id := context.Param("id")
 	mealID, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
+		go event.Publish("logs", map[string]string{
+			"name":  "meal",
+			"level": "error",
+			"data":  fmt.Sprintf("Invalid meal ID sent, err: %v", err.Error()),
+		})
 		context.JSON(http.StatusBadRequest, gin.H{"message": "invalid meal ID"})
 		return
 	}
@@ -87,13 +92,27 @@ func getMeal(context *gin.Context) {
 
 	meal, err := Models.MealRepo.GetByUser(userID, mealID)
 	if meal == nil {
+		go event.Publish("logs", map[string]string{
+			"name":  "meal",
+			"level": "error",
+			"data":  fmt.Sprintf("No meals found with this id for current user (user, meal id) (%v, %v)", userID, mealID),
+		})
 		context.JSON(http.StatusNotFound, gin.H{"message": "no meals found with this id for current user"})
 		return
 	}
 	if err != nil {
+		go event.Publish("logs", map[string]string{
+			"name":  "meal",
+			"level": "error",
+			"data":  fmt.Sprintf("Failed to send meal, err: %v", err.Error()),
+		})
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "server error", "error": err.Error()})
 		return
 	}
-
+	go event.Publish("logs", map[string]string{
+		"name":  "meal",
+		"level": "error",
+		"data":  fmt.Sprintf("Meal sent successfully to the user,  meal: %v", meal),
+	})
 	context.JSON(http.StatusOK, meal)
 }
