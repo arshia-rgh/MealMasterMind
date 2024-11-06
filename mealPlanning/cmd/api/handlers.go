@@ -6,6 +6,7 @@ import (
 	"mealPlanning/data"
 	"mealPlanning/event"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -74,5 +75,25 @@ func getMeals(context *gin.Context) {
 }
 
 func getMeal(context *gin.Context) {
+	id := context.Param("id")
+	mealID, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "invalid meal ID"})
+		return
+	}
 
+	user, _ := context.Get("user")
+	userID := user.(map[string]any)["id"].(int64)
+
+	meal, err := Models.MealRepo.GetByUser(userID, mealID)
+	if meal == nil {
+		context.JSON(http.StatusNotFound, gin.H{"message": "no meals found with this id for current user"})
+		return
+	}
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "server error", "error": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusOK, meal)
 }
