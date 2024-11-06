@@ -116,3 +116,7 @@ func (r *mealRepository) GetAllByUser(userID int64) ([]*Meal, error) {
 	return meals, nil
 
 }
+
+func (r *mealRepository) GetByUser(userID int64) (*Meal, error) {
+
+}
