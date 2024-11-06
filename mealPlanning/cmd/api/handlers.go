@@ -49,7 +49,13 @@ func getMeals(context *gin.Context) {
 	meals, err := Models.MealRepo.GetAll()
 
 	if err != nil {
+		log.Printf("server error : %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "server error", "error": err.Error()})
+		go event.Publish("logs", map[string]string{
+			"name":  "meal",
+			"level": "error",
+			"data":  fmt.Sprintf("failed to send meals: %v", err.Error()),
+		})
 	}
 	user, _ := context.Get("user")
 
@@ -62,6 +68,11 @@ func getMeals(context *gin.Context) {
 		}
 	}
 
+	go event.Publish("logs", map[string]string{
+		"name":  "meal",
+		"level": "error",
+		"data":  fmt.Sprintf("Meals sent successfully to the user,  meals: %v", ownedMeals),
+	})
 	context.JSON(http.StatusOK, ownedMeals)
 
 }
