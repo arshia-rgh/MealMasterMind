@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// createMeal --> protected by authentication
 func createMeal(context *gin.Context) {
 	var meal data.Meal
 
@@ -45,6 +46,7 @@ func createMeal(context *gin.Context) {
 
 }
 
+// getMeals --> protected by authentication and IsOwned object
 func getMeals(context *gin.Context) {
 	meals, err := Models.MealRepo.GetAll()
 
