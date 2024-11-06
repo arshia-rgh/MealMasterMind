@@ -1,0 +1,2 @@
+GET localhost:8081/api/protected/meals/1
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhcnNoaWEtcmdoIiwiZXhwIjoxNzMwMjI5ODQwfQ.W3hfv9hQg16hhyesIk5zThrVntISrlYof--_S6NB_Mg
