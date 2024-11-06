@@ -84,22 +84,3 @@ func (r *mealRepository) Update(meal *Meal) error {
 
 	return err
 }
-
-func (r *mealRepository) IsOwnedMeal(ID int64, userID int64) bool {
-	query := `
-		SELECT COUNT(*)
-		FROM meals
-		INNER JOIN meal_plans ON meals.meal_plan_id = meal_plans.id
-		WHERE meals.id = $1 AND meal_plans.user_id = $2
-	`
-	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
-	defer cancel()
-
-	var count int
-	err := r.db.QueryRowContext(ctx, query, ID, userID).Scan(&count)
-	if err != nil {
-		return false
-	}
-
-	return count > 0
-}
