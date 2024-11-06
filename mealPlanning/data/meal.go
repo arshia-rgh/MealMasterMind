@@ -86,5 +86,33 @@ func (r *mealRepository) Update(meal *Meal) error {
 }
 
 func (r *mealRepository) GetAllByUser(userID int64) ([]*Meal, error) {
+	query := `
+		SELECT * FROM meals
+		INNER JOIN meal_plans ON meals.meal_plan_id = meal_plans.id
+		WHERE meal_plans.user_id = $1
+
+	`
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	rows, err := r.db.QueryContext(ctx, query, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	var meals []*Meal
+
+	for rows.Next() {
+		var meal Meal
+		err := rows.Scan(&meal.ID, &meal.Day, &meal.RecipeId, &meal.MealPlanId)
+		if err != nil {
+			return nil, err
+		}
+
+		meals = append(meals, &meal)
+
+	}
+
+	return meals, nil
 
 }
