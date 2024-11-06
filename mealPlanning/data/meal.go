@@ -3,6 +3,7 @@ package data
 import (
 	"context"
 	"database/sql"
+	"errors"
 )
 
 type mealRepository struct {
@@ -33,6 +34,9 @@ func (r *mealRepository) GetByID(ID int64) (*Meal, error) {
 	err := r.db.QueryRowContext(ctx, query, ID).Scan(&meal.ID, &meal.Day, &meal.RecipeId, &meal.MealPlanId)
 
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, nil
+		}
 		return nil, err
 	}
 	return &meal, nil
@@ -117,6 +121,24 @@ func (r *mealRepository) GetAllByUser(userID int64) ([]*Meal, error) {
 
 }
 
-func (r *mealRepository) GetByUser(userID int64) (*Meal, error) {
+func (r *mealRepository) GetByUser(userID, mealID int64) (*Meal, error) {
+	query := `
+		SELECT * FROM meals
+		INNER JOIN meal_plans ON meals.meal_plan_id = meal_plans.id
+		WHERE meals.id = $1 AND meal_plans.user_id = $2
+	`
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	var meal Meal
+
+	err := r.db.QueryRowContext(ctx, query, mealID, userID).Scan(&meal.ID, &meal.Day, &meal.RecipeId, &meal.MealPlanId)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &meal, nil
 
 }
