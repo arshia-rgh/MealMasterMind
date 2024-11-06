@@ -72,3 +72,7 @@ func getMeals(context *gin.Context) {
 	context.JSON(http.StatusOK, meals)
 
 }
+
+func getMeal(context *gin.Context) {
+
+}
