@@ -48,7 +48,11 @@ func createMeal(context *gin.Context) {
 
 // getMeals --> protected by authentication and IsOwned object
 func getMeals(context *gin.Context) {
-	meals, err := Models.MealRepo.GetAll()
+	user, _ := context.Get("user")
+
+	userID := user.(map[string]any)["id"].(int64)
+
+	meals, err := Models.MealRepo.GetAllByUser(userID)
 
 	if err != nil {
 		log.Printf("server error : %v", err)
@@ -59,22 +63,12 @@ func getMeals(context *gin.Context) {
 			"data":  fmt.Sprintf("failed to send meals: %v", err.Error()),
 		})
 	}
-	user, _ := context.Get("user")
-
-	userID := user.(map[string]any)["id"].(int64)
-
-	var ownedMeals []*data.Meal
-	for _, v := range meals {
-		if Models.MealRepo.IsOwnedMeal(v.ID, userID) {
-			ownedMeals = append(ownedMeals, v)
-		}
-	}
 
 	go event.Publish("logs", map[string]string{
 		"name":  "meal",
 		"level": "error",
-		"data":  fmt.Sprintf("Meals sent successfully to the user,  meals: %v", ownedMeals),
+		"data":  fmt.Sprintf("Meals sent successfully to the user,  meals: %v", meals),
 	})
-	context.JSON(http.StatusOK, ownedMeals)
+	context.JSON(http.StatusOK, meals)
 
 }
