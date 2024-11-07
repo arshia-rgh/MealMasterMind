@@ -68,23 +68,23 @@ func (r *mealRepository) GetAll() ([]*Meal, error) {
 
 }
 
-func (r *mealRepository) Delete(ID int64) error {
+func (r *mealRepository) Delete(mealID int64) error {
 	query := "DELETE FROM meals WHERE id = $1"
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	_, err := r.db.ExecContext(ctx, query, ID)
+	_, err := r.db.ExecContext(ctx, query, mealID)
 
 	return err
 
 }
 
-func (r *mealRepository) Update(meal *Meal) error {
+func (r *mealRepository) Update(mealID int64, meal *Meal) error {
 	query := "UPDATE meals SET day = $1, recipe_id = $2, meal_plan_id = $3 WHERE id = $4"
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	_, err := r.db.ExecContext(ctx, query, meal.Day, meal.RecipeId, meal.MealPlanId, meal.ID)
+	_, err := r.db.ExecContext(ctx, query, meal.Day, meal.RecipeId, meal.MealPlanId, mealID)
 
 	return err
 }
@@ -146,6 +146,17 @@ func (r *mealRepository) GetByUser(userID, mealID int64) (*Meal, error) {
 }
 
 // UpdateByUser updates specific meal if it belongs to the given id user
-func (r *mealRepository) UpdateByUser(userID, mealID int64) error {
+func (r *mealRepository) UpdateByUser(userID, mealID int64, meal *Meal) error {
+	query := `
+		UPDATE meals 
+		SET day = $1, recipe_id = $2, meal_plan_id = $3 
+		FROM meal_plans
+        WHERE meals.id = $4 AND meal_plans.id = meals.meal_plan_id AND meal_plans.user_id = $5
+	`
 
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	_, err := r.db.ExecContext(ctx, query, meal.Day, meal.RecipeId, meal.MealPlanId, mealID, userID)
+	return err
 }

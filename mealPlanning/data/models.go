@@ -36,11 +36,11 @@ type MealRepository interface {
 	Save(meal *Meal) error
 	GetByID(ID int64) (*Meal, error)
 	GetAll() ([]*Meal, error)
-	Delete(ID int64) error
-	Update(meal *Meal) error
+	Delete(mealID int64) error
+	Update(mealID int64, meal *Meal) error
 	GetAllByUser(userID int64) ([]*Meal, error)
 	GetByUser(userID, mealID int64) (*Meal, error)
-	UpdateByUser(userID, mealID int64) error
+	UpdateByUser(userID, mealID int64, meal *Meal) error
 }
 
 type MealPlanRepository interface {
