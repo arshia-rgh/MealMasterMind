@@ -117,3 +117,7 @@ func getMeal(context *gin.Context) {
 	})
 	context.JSON(http.StatusOK, meal)
 }
+
+func updateMeal(context *gin.Context) {
+
+}
