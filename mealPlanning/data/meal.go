@@ -144,3 +144,8 @@ func (r *mealRepository) GetByUser(userID, mealID int64) (*Meal, error) {
 	return &meal, nil
 
 }
+
+// UpdateByUser updates specific meal if it belongs to the given id user
+func (r *mealRepository) UpdateByUser(userID, mealID int64) error {
+
+}
