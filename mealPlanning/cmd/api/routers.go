@@ -9,6 +9,7 @@ func (app *App) registerRoutesProtected(server *gin.RouterGroup) {
 	server.GET("/meals", app.getMeals)
 	server.GET("/meals/:id", app.getMeal)
 	server.PUT("/meals/:id", app.updateMeal)
+	server.DELETE("meals/:id", app.deleteMeal)
 }
 
 func (app *App) registerRoutesPublic(server *gin.RouterGroup) {
