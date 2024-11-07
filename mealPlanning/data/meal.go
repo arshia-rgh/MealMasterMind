@@ -146,7 +146,7 @@ func (r *mealRepository) GetByUser(userID, mealID int64) (*Meal, error) {
 }
 
 // UpdateByUser updates specific meal if it belongs to the given id user
-func (r *mealRepository) UpdateByUser(userID, mealID int64, meal *Meal) error {
+func (r *mealRepository) UpdateByUser(userID, mealID int64, meal *Meal) (bool, error) {
 	query := `
 		UPDATE meals 
 		SET day = $1, recipe_id = $2, meal_plan_id = $3 
@@ -157,6 +157,16 @@ func (r *mealRepository) UpdateByUser(userID, mealID int64, meal *Meal) error {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	_, err := r.db.ExecContext(ctx, query, meal.Day, meal.RecipeId, meal.MealPlanId, mealID, userID)
-	return err
+	result, err := r.db.ExecContext(ctx, query, meal.Day, meal.RecipeId, meal.MealPlanId, mealID, userID)
+	if err != nil {
+		return false, err
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+
+	if rowsAffected == 0 {
+		return false, nil
+	}
+	return true, nil
+
 }
