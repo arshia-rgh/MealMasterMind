@@ -74,6 +74,7 @@ func getMeals(context *gin.Context) {
 
 }
 
+// getMeal --> protected by authentication and IsOwned object
 func getMeal(context *gin.Context) {
 	id := context.Param("id")
 	mealID, err := strconv.ParseInt(id, 10, 64)
