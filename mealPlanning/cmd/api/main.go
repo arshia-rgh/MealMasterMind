@@ -10,19 +10,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type App struct {
+	DB     *sql.DB
+	Models data.Models
+}
+
 const webPort = "8080"
 
-var DB *sql.DB
-var Models data.Models
-
 func main() {
-	DB = InitDB()
+	DB := InitDB()
 	if DB == nil {
 		panic("could not connect to the postgres")
 	}
-
-	Models = data.New(DB)
-
+	Models := data.New(DB)
+	app := App{
+		DB:     DB,
+		Models: Models,
+	}
 	defer DB.Close()
 
 	server := gin.Default()
@@ -33,15 +37,16 @@ func main() {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
-
+	// protected apis
 	protectedGroup := server.Group("/api/protected")
 	protectedGroup.Use(Authentication)
 	protectedGroup.Use(RequestResponseLogger)
-	RegisterRoutesProtected(protectedGroup)
+	app.RegisterRoutesProtected(protectedGroup)
 
+	// public apis
 	publicGroup := server.Group("/api")
 	publicGroup.Use(RequestResponseLogger)
-	RegisterRoutesPublic(publicGroup)
+	app.RegisterRoutesPublic(publicGroup)
 
 	err := server.Run(fmt.Sprintf(":%v", webPort))
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 )
 
 // createMeal --> protected by authentication
-func createMeal(context *gin.Context) {
+func (app *App) createMeal(context *gin.Context) {
 	var meal data.Meal
 
 	err := context.ShouldBindJSON(&meal)
@@ -26,7 +26,7 @@ func createMeal(context *gin.Context) {
 		return
 	}
 
-	err = Models.MealRepo.Save(&meal)
+	err = app.Models.MealRepo.Save(&meal)
 	if err != nil {
 		log.Printf("Server error: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "server error"})
@@ -48,12 +48,12 @@ func createMeal(context *gin.Context) {
 }
 
 // getMeals --> protected by authentication and IsOwned object
-func getMeals(context *gin.Context) {
+func (app *App) getMeals(context *gin.Context) {
 	user, _ := context.Get("user")
 
 	userID := user.(map[string]any)["id"].(int64)
 
-	meals, err := Models.MealRepo.GetAllByUser(userID)
+	meals, err := app.Models.MealRepo.GetAllByUser(userID)
 
 	if err != nil {
 		log.Printf("server error : %v", err)
@@ -75,7 +75,7 @@ func getMeals(context *gin.Context) {
 }
 
 // getMeal --> protected by authentication and IsOwned object
-func getMeal(context *gin.Context) {
+func (app *App) getMeal(context *gin.Context) {
 	id := context.Param("id")
 	mealID, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
@@ -91,7 +91,7 @@ func getMeal(context *gin.Context) {
 	user, _ := context.Get("user")
 	userID := user.(map[string]any)["id"].(int64)
 
-	meal, err := Models.MealRepo.GetByUser(userID, mealID)
+	meal, err := app.Models.MealRepo.GetByUser(userID, mealID)
 	if meal == nil {
 		go event.Publish("logs", map[string]string{
 			"name":  "meal",
@@ -119,7 +119,7 @@ func getMeal(context *gin.Context) {
 }
 
 // updateMeal --> protected by authentication and IsOwned object
-func updateMeal(context *gin.Context) {
+func (app *App) updateMeal(context *gin.Context) {
 	var meal data.Meal
 	err := context.ShouldBindJSON(&meal)
 	if err != nil {
@@ -137,7 +137,7 @@ func updateMeal(context *gin.Context) {
 		return
 	}
 
-	updatedMeal, err := Models.MealRepo.UpdateByUser(userID, mealID, &meal)
+	updatedMeal, err := app.Models.MealRepo.UpdateByUser(userID, mealID, &meal)
 
 	if updatedMeal == nil {
 		context.JSON(http.StatusNotFound, gin.H{"message": "no meals found with this id for current user"})
