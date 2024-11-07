@@ -89,6 +89,7 @@ func (r *mealRepository) Update(meal *Meal) error {
 	return err
 }
 
+// GetAllByUser get all meals but only for the given id of the user
 func (r *mealRepository) GetAllByUser(userID int64) ([]*Meal, error) {
 	query := `
 		SELECT meals.id, meals.day, meals.recipe_id, meals.meal_plan_id FROM meals
@@ -121,6 +122,7 @@ func (r *mealRepository) GetAllByUser(userID int64) ([]*Meal, error) {
 
 }
 
+// GetByUser get specific meal if it belongs to the given id user
 func (r *mealRepository) GetByUser(userID, mealID int64) (*Meal, error) {
 	query := `
 		SELECT meals.id, meals.day, meals.recipe_id, meals.meal_plan_id FROM meals
