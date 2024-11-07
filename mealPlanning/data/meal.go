@@ -91,7 +91,7 @@ func (r *mealRepository) Update(meal *Meal) error {
 
 func (r *mealRepository) GetAllByUser(userID int64) ([]*Meal, error) {
 	query := `
-		SELECT * FROM meals
+		SELECT meals.id, meals.day, meals.recipe_id, meals.meal_plan_id FROM meals
 		INNER JOIN meal_plans ON meals.meal_plan_id = meal_plans.id
 		WHERE meal_plans.user_id = $1
 
@@ -123,7 +123,7 @@ func (r *mealRepository) GetAllByUser(userID int64) ([]*Meal, error) {
 
 func (r *mealRepository) GetByUser(userID, mealID int64) (*Meal, error) {
 	query := `
-		SELECT * FROM meals
+		SELECT meals.id, meals.day, meals.recipe_id, meals.meal_plan_id FROM meals
 		INNER JOIN meal_plans ON meals.meal_plan_id = meal_plans.id
 		WHERE meals.id = $1 AND meal_plans.user_id = $2
 	`

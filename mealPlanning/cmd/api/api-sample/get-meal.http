@@ -1,2 +1,2 @@
-GET localhost:8081/api/protected/meals/1
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhcnNoaWEtcmdoIiwiZXhwIjoxNzMwMjI5ODQwfQ.W3hfv9hQg16hhyesIk5zThrVntISrlYof--_S6NB_Mg
+GET localhost:8081/api/protected/meals/34
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhcnNoaWEtcmdoIiwiZXhwIjoxNzMwOTgwNDU1fQ.GmmzcXe6ycxZ20hZ5dJFPm1QBDPY1jViuwI70rLFvcM
