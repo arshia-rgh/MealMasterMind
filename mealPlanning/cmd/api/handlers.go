@@ -118,6 +118,7 @@ func getMeal(context *gin.Context) {
 	context.JSON(http.StatusOK, meal)
 }
 
+// updateMeal --> protected by authentication and IsOwned object
 func updateMeal(context *gin.Context) {
 	var meal data.Meal
 	err := context.ShouldBindJSON(&meal)
