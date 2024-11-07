@@ -40,7 +40,7 @@ type MealRepository interface {
 	Update(mealID int64, meal *Meal) error
 	GetAllByUser(userID int64) ([]*Meal, error)
 	GetByUser(userID, mealID int64) (*Meal, error)
-	UpdateByUser(userID, mealID int64, meal *Meal) (bool, error)
+	UpdateByUser(userID, mealID int64, meal *Meal) (*Meal, error)
 }
 
 type MealPlanRepository interface {
