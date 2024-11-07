@@ -176,3 +176,7 @@ func (app *App) updateMeal(context *gin.Context) {
 	})
 	context.JSON(http.StatusOK, updatedMeal)
 }
+
+func (app *App) deleteMeal(context *gin.Context) {
+
+}
