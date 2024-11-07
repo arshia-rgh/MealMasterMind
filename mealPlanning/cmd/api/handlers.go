@@ -136,16 +136,17 @@ func updateMeal(context *gin.Context) {
 		return
 	}
 
-	ok, err := Models.MealRepo.UpdateByUser(userID, mealID, &meal)
+	updatedMeal, err := Models.MealRepo.UpdateByUser(userID, mealID, &meal)
+
+	if updatedMeal == nil {
+		context.JSON(http.StatusNotFound, gin.H{"message": "no meals found with this id for current user"})
+		return
+	}
+
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "server error", "error": err.Error()})
 		return
 	}
 
-	if !ok {
-		context.JSON(http.StatusNotFound, gin.H{"message": "no meals found with this id for current user"})
-		return
-	}
-
-	context.JSON(http.StatusOK, gin.H{})
+	context.JSON(http.StatusOK, updatedMeal)
 }
