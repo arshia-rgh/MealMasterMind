@@ -119,5 +119,33 @@ func getMeal(context *gin.Context) {
 }
 
 func updateMeal(context *gin.Context) {
+	var meal data.Meal
+	err := context.ShouldBindJSON(&meal)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "invalid data", "err": err.Error()})
+		return
+	}
+	user, _ := context.Get("user")
 
+	userID := user.(map[string]any)["id"].(int64)
+	id := context.Param("id")
+	mealID, err := strconv.ParseInt(id, 10, 64)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "invalid meal ID"})
+		return
+	}
+
+	ok, err := Models.MealRepo.UpdateByUser(userID, mealID, &meal)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "server error", "error": err.Error()})
+		return
+	}
+
+	if !ok {
+		context.JSON(http.StatusNotFound, gin.H{"message": "no meals found with this id for current user"})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{})
 }
