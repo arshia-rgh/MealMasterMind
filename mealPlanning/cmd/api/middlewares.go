@@ -18,7 +18,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Authentication(context *gin.Context) {
+func authentication(context *gin.Context) {
 	token := context.Request.Header.Get("Authorization")
 
 	if token == "" {
@@ -72,7 +72,7 @@ func getCurrentUser(token string) (int64, string, error) {
 	return res.UserID, res.UserEmail, nil
 }
 
-func RequestResponseLogger(c *gin.Context) {
+func requestResponseLogger(c *gin.Context) {
 	var requestedUser string
 	userInfo, exists := c.Get("user")
 

@@ -19,7 +19,7 @@ func openDB(dsn string) (*sql.DB, error) {
 	return db, nil
 }
 
-func InitDB() *sql.DB {
+func initDB() *sql.DB {
 	var counts int
 
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",

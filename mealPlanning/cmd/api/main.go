@@ -18,7 +18,7 @@ type App struct {
 const webPort = "8080"
 
 func main() {
-	DB := InitDB()
+	DB := initDB()
 	if DB == nil {
 		panic("could not connect to the postgres")
 	}
@@ -39,13 +39,13 @@ func main() {
 	}))
 	// protected apis
 	protectedGroup := server.Group("/api/protected")
-	protectedGroup.Use(Authentication)
-	protectedGroup.Use(RequestResponseLogger)
+	protectedGroup.Use(authentication)
+	protectedGroup.Use(requestResponseLogger)
 	app.registerRoutesProtected(protectedGroup)
 
 	// public apis
 	publicGroup := server.Group("/api")
-	publicGroup.Use(RequestResponseLogger)
+	publicGroup.Use(requestResponseLogger)
 	app.registerRoutesPublic(publicGroup)
 
 	err := server.Run(fmt.Sprintf(":%v", webPort))
