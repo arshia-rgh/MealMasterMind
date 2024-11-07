@@ -187,3 +187,7 @@ func (r *mealRepository) UpdateByUser(userID, mealID int64, meal *Meal) (*Meal, 
 	return &updatedMeal, err
 
 }
+
+func (r *mealRepository) DeleteByUser(userID, mealID int64) (bool, error) {
+
+}
