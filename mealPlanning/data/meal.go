@@ -189,5 +189,28 @@ func (r *mealRepository) UpdateByUser(userID, mealID int64, meal *Meal) (*Meal, 
 }
 
 func (r *mealRepository) DeleteByUser(userID, mealID int64) (bool, error) {
+	query := `
+		DELETE FROM meals
+		USING meal_plans
+	   	WHERE meals.id = $1 AND meals.meal_plan_id = meal_plans.id AND meal_plans.user_id = $2
+	`
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	result, err := r.db.ExecContext(ctx, query, mealID, userID)
+	if err != nil {
+		return false, err
+	}
+
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return false, err
+	}
+
+	if affected == 0 {
+		return false, nil
+	}
+
+	return true, nil
 
 }
