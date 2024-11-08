@@ -187,6 +187,7 @@ func (app *App) updateMeal(context *gin.Context) {
 	context.JSON(http.StatusOK, updatedMeal)
 }
 
+// deleteMeal --> protected by authentication and IsOwned object
 func (app *App) deleteMeal(context *gin.Context) {
 	user, _ := context.Get("user")
 	userID := user.(map[string]any)["id"].(int64)
