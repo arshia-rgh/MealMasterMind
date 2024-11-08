@@ -102,6 +102,9 @@ func (r *mealRepository) GetAllByUser(userID int64) ([]*Meal, error) {
 
 	rows, err := r.db.QueryContext(ctx, query, userID)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, nil
+		}
 		return nil, err
 	}
 

@@ -20,7 +20,7 @@ func (app *App) createMeal(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "invalid data", "err": err.Error()})
 		go event.Publish("logs", map[string]string{
 			"name":  "meal",
-			"level": "error",
+			"level": "warning",
 			"data":  fmt.Sprintf("failed to create meal: %v", err.Error()),
 		})
 		return
@@ -55,6 +55,16 @@ func (app *App) getMeals(context *gin.Context) {
 
 	meals, err := app.Models.MealRepo.GetAllByUser(userID)
 
+	if meals == nil && err == nil {
+		go event.Publish("logs", map[string]string{
+			"name":  "meal",
+			"level": "warning",
+			"data":  fmt.Sprintf("No meals found for current user: %v", userID),
+		})
+		context.JSON(http.StatusNotFound, gin.H{"message": "no meals found for current user"})
+		return
+	}
+
 	if err != nil {
 		log.Printf("server error : %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "server error", "error": err.Error()})
@@ -67,7 +77,7 @@ func (app *App) getMeals(context *gin.Context) {
 
 	go event.Publish("logs", map[string]string{
 		"name":  "meal",
-		"level": "error",
+		"level": "info",
 		"data":  fmt.Sprintf("Meals sent successfully to the user,  meals: %v", meals),
 	})
 	context.JSON(http.StatusOK, meals)
@@ -81,7 +91,7 @@ func (app *App) getMeal(context *gin.Context) {
 	if err != nil {
 		go event.Publish("logs", map[string]string{
 			"name":  "meal",
-			"level": "error",
+			"level": "warning",
 			"data":  fmt.Sprintf("Invalid meal ID sent, err: %v", err.Error()),
 		})
 		context.JSON(http.StatusBadRequest, gin.H{"message": "invalid meal ID"})
@@ -92,10 +102,10 @@ func (app *App) getMeal(context *gin.Context) {
 	userID := user.(map[string]any)["id"].(int64)
 
 	meal, err := app.Models.MealRepo.GetByUser(userID, mealID)
-	if meal == nil {
+	if meal == nil && err == nil {
 		go event.Publish("logs", map[string]string{
 			"name":  "meal",
-			"level": "error",
+			"level": "warning",
 			"data":  fmt.Sprintf("No meals found with this id for current user (user, meal id) (%v, %v)", userID, mealID),
 		})
 		context.JSON(http.StatusNotFound, gin.H{"message": "no meals found with this id for current user"})
@@ -125,7 +135,7 @@ func (app *App) updateMeal(context *gin.Context) {
 	if err != nil {
 		go event.Publish("logs", map[string]string{
 			"name":  "meal",
-			"level": "error",
+			"level": "warning",
 			"data":  fmt.Sprintf("failed to update meal: %v", err.Error()),
 		})
 		context.JSON(http.StatusBadRequest, gin.H{"message": "invalid data", "err": err.Error()})
@@ -140,7 +150,7 @@ func (app *App) updateMeal(context *gin.Context) {
 	if err != nil {
 		go event.Publish("logs", map[string]string{
 			"name":  "meal",
-			"level": "error",
+			"level": "warning",
 			"data":  fmt.Sprintf("Invalid meal ID sent, err: %v", err.Error()),
 		})
 		context.JSON(http.StatusBadRequest, gin.H{"message": "invalid meal ID"})
@@ -149,10 +159,10 @@ func (app *App) updateMeal(context *gin.Context) {
 
 	updatedMeal, err := app.Models.MealRepo.UpdateByUser(userID, mealID, &meal)
 
-	if updatedMeal == nil {
+	if updatedMeal == nil && err == nil {
 		go event.Publish("logs", map[string]string{
 			"name":  "meal",
-			"level": "error",
+			"level": "warning",
 			"data":  fmt.Sprintf("No meals found with this id for current user (user, meal id) (%v, %v)", userID, mealID),
 		})
 		context.JSON(http.StatusNotFound, gin.H{"message": "no meals found with this id for current user"})
@@ -171,7 +181,7 @@ func (app *App) updateMeal(context *gin.Context) {
 
 	go event.Publish("logs", map[string]string{
 		"name":  "meal",
-		"level": "error",
+		"level": "info",
 		"data":  fmt.Sprintf("meal with %v id updated by user with %v id, meal: %v", mealID, userID, updatedMeal),
 	})
 	context.JSON(http.StatusOK, updatedMeal)
@@ -186,7 +196,7 @@ func (app *App) deleteMeal(context *gin.Context) {
 	if err != nil {
 		go event.Publish("logs", map[string]string{
 			"name":  "meal",
-			"level": "error",
+			"level": "warning",
 			"data":  fmt.Sprintf("Invalid meal ID sent, err: %v", err.Error()),
 		})
 		context.JSON(http.StatusBadRequest, gin.H{"message": "invalid meal ID"})
@@ -197,7 +207,7 @@ func (app *App) deleteMeal(context *gin.Context) {
 	if !ok && err == nil {
 		go event.Publish("logs", map[string]string{
 			"name":  "meal",
-			"level": "error",
+			"level": "warning",
 			"data":  fmt.Sprintf("No meals found with this id for current user (user, meal id) (%v, %v)", userID, mealID),
 		})
 		context.JSON(http.StatusNotFound, gin.H{"message": "no meals found with this id for current user"})
@@ -216,7 +226,7 @@ func (app *App) deleteMeal(context *gin.Context) {
 
 	go event.Publish("logs", map[string]string{
 		"name":  "meal",
-		"level": "error",
+		"level": "info",
 		"data":  fmt.Sprintf("meal with %v id deleted by user with %v id", mealID, userID),
 	})
 	context.JSON(http.StatusOK, gin.H{"message": fmt.Sprintf("meal with %v id deleted successfully", mealID)})
